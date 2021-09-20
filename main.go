@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/configs"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,6 +17,7 @@ func getRunningAddress() string {
 }
 
 func main() {
+	configs.InitDB()
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "wellcome backend services")
