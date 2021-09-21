@@ -1,21 +1,27 @@
 package configs
 
 import (
-	"backend/internal/daftar_kunjungan/models"
+	"backend/pkg/database"
+	"fmt"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func InitDB() {
 	dsn := "root:boomskii95.@tcp(127.0.0.1:3306)/rumah_sakit?charset=utf8mb4&parseTime=True&loc=Local"
-	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	var err error
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Databases Failed to connect")
+	} else {
+		fmt.Println("Database Connected")
 	}
-	Migrate(DB)
+	migrationDB()
 }
 
-func Migrate(DB *gorm.DB) {
-	DB.AutoMigrate(&models.Patient{})
+func migrationDB() {
+	DB.AutoMigrate(&database.Doctors{})
 }
