@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"backend/pkg/database"
+	"backend/models/doctors"
 	"fmt"
 
 	"gorm.io/driver/mysql"
@@ -23,5 +23,5 @@ func InitDB() {
 }
 
 func migrationDB() {
-	DB.AutoMigrate(&database.Doctors{})
+	DB.AutoMigrate(&doctors.Doctors{})
 }
