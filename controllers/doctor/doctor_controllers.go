@@ -1,20 +1,33 @@
-package controllers
+package doctor
 
 import (
 	"backend/configs"
-	"backend/internal/crud_doctor/models"
-	"backend/pkg/database"
+	"backend/models/doctors"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 func InsertDoctor(c echo.Context) error {
-	var dataDoctor models.DoctorRegister
+	var dataDoctor doctors.DoctorRegister
+	c.Bind(&dataDoctor)
 
-	c.Bind(dataDoctor)
-
-	//validate
+	if dataDoctor.Email == "" {
+		return c.JSON(http.StatusBadRequest, configs.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Email Still Empty",
+			Data:    nil,
+		})
+	}
+	if dataDoctor.Password == "" {
+		return c.JSON(http.StatusBadRequest, configs.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Password Still Empty",
+			Data:    nil,
+		})
+	}
 	if dataDoctor.Name == "" {
 		return c.JSON(http.StatusBadRequest, configs.BaseResponse{
 			Code:    http.StatusBadRequest,
@@ -22,7 +35,7 @@ func InsertDoctor(c echo.Context) error {
 			Data:    nil,
 		})
 	}
-	if dataDoctor.NIP == "" {
+	if dataDoctor.Nip == "" {
 		return c.JSON(http.StatusBadRequest, configs.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "NIP Still Empty",
@@ -44,11 +57,14 @@ func InsertDoctor(c echo.Context) error {
 		})
 	}
 
-	var doctorDB database.Doctors
+	var doctorDB doctors.Doctors
+	doctorDB.Email = dataDoctor.Email
+	doctorDB.Password = dataDoctor.Password
 	doctorDB.Name = dataDoctor.Name
-	doctorDB.NIP = dataDoctor.NIP
+	doctorDB.Nip = dataDoctor.Nip
 	doctorDB.Bidang = dataDoctor.Bidang
 	doctorDB.ContactPerson = dataDoctor.ContactPerson
+	doctorDB.CreateAt = time.Now()
 
 	result := configs.DB.Create(&doctorDB)
 	if result.Error != nil {
@@ -61,8 +77,29 @@ func InsertDoctor(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, configs.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "Inserted Doctors Data ",
+		Message: "Inserted Doctors Data",
 		Data:    doctorDB,
+	})
+
+}
+
+func GetAllDoctors(c echo.Context) error {
+	doctors := []doctors.Doctors{}
+
+	result := configs.DB.Find(&doctors)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, configs.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Server Error",
+				Data:    nil,
+			})
+		}
+	}
+	return c.JSON(http.StatusOK, configs.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "Inserted Doctors Data",
+		Data:    doctors,
 	})
 
 }
