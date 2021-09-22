@@ -8,9 +8,11 @@ import (
 
 func AllRoutes() *echo.Echo {
 	e := echo.New()
-	ev1 := e.Group("api/v1/")
-	ev1.POST("add_doctor", doctor.InsertDoctor)
-	ev1.GET("get_all_doctor", doctor.GetAllDoctors)
-	ev1.POST("delete_doctor/:id", doctor.DeleteDoctorData)
+	eDoctor := e.Group("api/v1/doctor/")
+	eDoctor.POST("add", doctor.InsertDoctor)
+	eDoctor.GET("get_all", doctor.GetAllDoctors)
+	eDoctor.GET("delete/:id", doctor.DeleteDoctorData)
+	eDoctor.GET("spesific/:id", doctor.GetSpesificDoctors)
+	eDoctor.POST("update_data", doctor.UpdateDoctor)
 	return e
 }
