@@ -89,17 +89,48 @@ func GetAllDoctors(c echo.Context) error {
 	result := configs.DB.Find(&doctors)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
-			return c.JSON(http.StatusInternalServerError, configs.BaseResponse{
-				Code:    http.StatusInternalServerError,
-				Message: "Server Error",
+			return c.JSON(http.StatusNoContent, configs.BaseResponse{
+				Code:    http.StatusNoContent,
+				Message: "Database Kosong",
 				Data:    nil,
 			})
 		}
+		return c.JSON(http.StatusInternalServerError, configs.BaseResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Server Error",
+			Data:    nil,
+		})
 	}
 	return c.JSON(http.StatusOK, configs.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "Inserted Doctors Data",
 		Data:    doctors,
 	})
+}
 
+func DeleteDoctorData(c echo.Context) error {
+	id := c.Param("id")
+	findDelete := []doctors.Doctors{}
+
+	configs.DB.Where("id = ?", id).Find(&findDelete)
+	result := configs.DB.Where("id = ?", id).Delete(&doctors.Doctors{})
+	if result.Error != nil {
+		return c.JSON(http.StatusInternalServerError, configs.BaseResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Server Error",
+			Data:    nil,
+		})
+	}
+	if result.RowsAffected != 0 {
+		return c.JSON(http.StatusOK, configs.BaseResponse{
+			Code:    http.StatusOK,
+			Message: "Data berhasil di delete",
+			Data:    findDelete,
+		})
+	}
+	return c.JSON(http.StatusNoContent, configs.BaseResponse{
+		Code:    http.StatusNoContent,
+		Message: "Data tidak ditemukan",
+		Data:    nil,
+	})
 }
