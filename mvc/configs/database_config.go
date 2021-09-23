@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"backend/models/doctors"
+	"backend/mvc/models/doctors"
 	"fmt"
 
 	"gorm.io/driver/mysql"

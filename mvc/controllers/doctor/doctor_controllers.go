@@ -1,8 +1,8 @@
 package doctor
 
 import (
-	"backend/configs"
-	"backend/models/doctors"
+	"backend/mvc/configs"
+	"backend/mvc/models/doctors"
 	"net/http"
 	"time"
 
