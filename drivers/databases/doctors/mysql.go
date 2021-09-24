@@ -18,9 +18,9 @@ func NewMysqlDoctorRepository(conn *gorm.DB) doctors.Repository {
 	}
 }
 
-func (rep *MysqlDoctorRepository) Login(ctx context.Context, email string, password string) (doctors.Domain, error) {
+func (rep *MysqlDoctorRepository) Login(ctx context.Context, domain doctors.Domain) (doctors.Domain, error) {
 	var doctor Doctors
-	result := rep.Conn.First(&doctor, "email = ? AND password = ?", email, password)
+	result := rep.Conn.First(&doctor, "email = ? AND password = ?", domain.Email, domain.Password)
 
 	if result.Error != nil {
 		return doctors.Domain{}, result.Error
@@ -29,20 +29,20 @@ func (rep *MysqlDoctorRepository) Login(ctx context.Context, email string, passw
 	return doctor.ToDomain(), nil
 }
 
-func (rep *MysqlDoctorRepository) Update(ctx context.Context, id int, name, address, nip, doctorJob, email, description, contactPerson string) (doctors.Domain, error) {
+func (rep *MysqlDoctorRepository) Update(ctx context.Context, domain doctors.Domain) (doctors.Domain, error) {
 	var doctor Doctors
 	var doctorUpdate Doctors
 
-	doctorUpdate.Name = name
-	doctorUpdate.Address = address
-	doctorUpdate.Nip = nip
-	doctorUpdate.DoctorJob = doctorJob
-	doctorUpdate.Email = email
-	doctorUpdate.Description = description
-	doctorUpdate.ContactPerson = contactPerson
+	doctorUpdate.Name = domain.Name
+	doctorUpdate.Address = domain.Address
+	doctorUpdate.Nip = domain.Nip
+	doctorUpdate.DoctorJob = doctor.DoctorJob
+	doctorUpdate.Email = doctor.Email
+	doctorUpdate.Description = doctor.Description
+	doctorUpdate.ContactPerson = doctor.ContactPerson
 	doctorUpdate.UpdateAt = time.Now()
 
-	result := rep.Conn.Model(&doctor).Where("id = ?", id).Updates(doctorUpdate)
+	result := rep.Conn.Model(&doctor).Where("id = ?", domain.Id).Updates(doctorUpdate)
 	if result.Error != nil {
 		return doctors.Domain{}, result.Error
 	}
@@ -50,17 +50,17 @@ func (rep *MysqlDoctorRepository) Update(ctx context.Context, id int, name, addr
 	return doctor.ToDomain(), nil
 }
 
-func (rep *MysqlDoctorRepository) Register(ctx context.Context, email, password, name, nip, address, description, doctorJob, contactPerson string) (doctors.Domain, error) {
+func (rep *MysqlDoctorRepository) Register(ctx context.Context, domain doctors.Domain) (doctors.Domain, error) {
 	var doctorInsert Doctors
 
-	doctorInsert.Email = email
-	doctorInsert.Password = password
-	doctorInsert.Name = name
-	doctorInsert.Address = address
-	doctorInsert.Nip = nip
-	doctorInsert.Description = description
-	doctorInsert.DoctorJob = doctorJob
-	doctorInsert.ContactPerson = contactPerson
+	doctorInsert.Email = domain.Email
+	doctorInsert.Password = domain.Password
+	doctorInsert.Name = domain.Name
+	doctorInsert.Address = domain.Address
+	doctorInsert.Nip = domain.Nip
+	doctorInsert.Description = domain.Description
+	doctorInsert.DoctorJob = domain.DoctorJob
+	doctorInsert.ContactPerson = domain.ContactPerson
 	doctorInsert.CreateAt = time.Now()
 
 	result := rep.Conn.Create(&doctorInsert)

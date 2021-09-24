@@ -1,4 +1,4 @@
-package doctors
+package patients
 
 import (
 	"context"
@@ -11,9 +11,9 @@ type Domain struct {
 	Password      string
 	Name          string
 	Address       string
-	Nip           string
-	Description   string
-	DoctorJob     string
+	BirthDate     time.Time
+	BirthPlace    string
+	NoBPJS        string
 	Token         string
 	ContactPerson string
 	CreateAt      time.Time

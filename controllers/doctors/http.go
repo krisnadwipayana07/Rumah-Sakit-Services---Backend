@@ -25,7 +25,7 @@ func (doctorController DoctorController) Login(c echo.Context) error {
 	c.Bind(&doctorLogin)
 
 	ctx := c.Request().Context()
-	doctor, err := doctorController.DoctorUseCase.Login(ctx, doctorLogin.Email, doctorLogin.Password)
+	doctor, err := doctorController.DoctorUseCase.Login(ctx, doctorLogin.ToDomain())
 
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
@@ -40,7 +40,7 @@ func (doctorController DoctorController) Update(c echo.Context) error {
 	c.Bind(&DoctorUpdate)
 
 	ctx := c.Request().Context()
-	doctor, err := doctorController.DoctorUseCase.Update(ctx, DoctorUpdate.Id, DoctorUpdate.Name, DoctorUpdate.Address, DoctorUpdate.Nip, DoctorUpdate.DoctorJob, DoctorUpdate.Email, DoctorUpdate.Token, DoctorUpdate.Description, DoctorUpdate.ContactPerson)
+	doctor, err := doctorController.DoctorUseCase.Update(ctx, DoctorUpdate.ToDomain())
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
@@ -53,7 +53,7 @@ func (doctorController DoctorController) Register(c echo.Context) error {
 	c.Bind(&DoctorRegister)
 
 	ctx := c.Request().Context()
-	doctor, err := doctorController.DoctorUseCase.Register(ctx, DoctorRegister.Email, DoctorRegister.Password, DoctorRegister.Name, DoctorRegister.Nip, DoctorRegister.Address, DoctorRegister.Description, DoctorRegister.DoctorJob, DoctorRegister.ContactPerson)
+	doctor, err := doctorController.DoctorUseCase.Register(ctx, DoctorRegister.ToDomain())
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
