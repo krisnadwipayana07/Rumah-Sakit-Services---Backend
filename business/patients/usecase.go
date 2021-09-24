@@ -1,4 +1,4 @@
-package doctors
+package patients
 
 import (
 	"context"
@@ -32,11 +32,17 @@ func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 	if domain.Address == "" {
 		return Domain{}, errors.New("address empty")
 	}
-	if domain.DoctorJob == "" {
-		return Domain{}, errors.New("doctorJob empty")
+	if domain.BirthDate.String() == "" {
+		return Domain{}, errors.New("birth Date empty")
+	}
+	if domain.BirthPlace == "" {
+		return Domain{}, errors.New("birth place empty")
+	}
+	if domain.NoBPJS == "" {
+		return Domain{}, errors.New("no BPJS empty")
 	}
 	if domain.ContactPerson == "" {
-		return Domain{}, errors.New("contact person empty")
+		return Domain{}, errors.New("contact Person empty")
 	}
 
 	user, err := uc.Repo.Register(ctx, domain)
@@ -51,23 +57,29 @@ func (uc *DoctorUsecase) Update(ctx context.Context, domain Domain) (Domain, err
 	if domain.Id == 0 {
 		return Domain{}, errors.New("id empty")
 	}
+	if domain.Email == "" {
+		return Domain{}, errors.New("email empty")
+	}
+	if domain.Password == "" {
+		return Domain{}, errors.New("password empty")
+	}
 	if domain.Name == "" {
 		return Domain{}, errors.New("name empty")
 	}
 	if domain.Address == "" {
 		return Domain{}, errors.New("address empty")
 	}
-	if domain.DoctorJob == "" {
-		return Domain{}, errors.New("doctorJob empty")
+	if domain.BirthDate.String() == "" {
+		return Domain{}, errors.New("birthDate empty")
 	}
-	if domain.Email == "" {
-		return Domain{}, errors.New("email empty")
+	if domain.BirthPlace == "" {
+		return Domain{}, errors.New("birthplace empty")
 	}
-	if domain.Token == "" {
-		return Domain{}, errors.New("token empty")
+	if domain.NoBPJS == "" {
+		return Domain{}, errors.New("no BPJS empty")
 	}
 	if domain.ContactPerson == "" {
-		return Domain{}, errors.New("contact person empty")
+		return Domain{}, errors.New("contact Person empty")
 	}
 
 	user, err := uc.Repo.Update(ctx, domain)

@@ -1,5 +1,7 @@
 package requests
 
+import "backend/business/doctors"
+
 type DoctorUpdate struct {
 	Id            int    `json:"id"`
 	Email         string `json:"email"`
@@ -11,4 +13,19 @@ type DoctorUpdate struct {
 	Token         string `json:"token"`
 	Description   string `json:"description"`
 	ContactPerson string `json:"contactPerson"`
+}
+
+func (doctorUpdate *DoctorUpdate) ToDomain() doctors.Domain {
+	return doctors.Domain{
+		Id:            doctorUpdate.Id,
+		Email:         doctorUpdate.Email,
+		Password:      doctorUpdate.Password,
+		Name:          doctorUpdate.Name,
+		Address:       doctorUpdate.Address,
+		Nip:           doctorUpdate.Nip,
+		DoctorJob:     doctorUpdate.DoctorJob,
+		Token:         doctorUpdate.Token,
+		Description:   doctorUpdate.Description,
+		ContactPerson: doctorUpdate.ContactPerson,
+	}
 }
