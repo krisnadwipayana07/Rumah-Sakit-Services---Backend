@@ -47,10 +47,6 @@ func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 }
 
 func (uc *DoctorUsecase) Update(ctx context.Context, domain Domain) (Domain, error) {
-
-	if domain.Id == 0 {
-		return Domain{}, errors.New("id empty")
-	}
 	if domain.Name == "" {
 		return Domain{}, errors.New("name empty")
 	}
@@ -92,3 +88,19 @@ func (uc *DoctorUsecase) Login(ctx context.Context, domain Domain) (Domain, erro
 	}
 	return user, nil
 }
+
+// func (uc *DoctorUsecase) AddSchedule(ctx context.Context, doctorId, scheduleId uint) ([]uint, error) {
+// 	if scheduleId <= 0 {
+// 		return []uint{0, 0}, errors.New("schedule id empty")
+// 	}
+// 	if doctorId <= 0 {
+// 		return []uint{0, 0}, errors.New("doctor id empty")
+// 	}
+// 	var domain Domain
+
+// 	manySchedule, err := uc.Repo.AddSchedule(ctx, domain, doctorId, scheduleId)
+// 	if err != nil {
+// 		return []uint{0, 0}, err
+// 	}
+// 	return manySchedule, nil
+// }

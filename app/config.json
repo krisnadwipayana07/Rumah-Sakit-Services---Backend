@@ -13,6 +13,11 @@
         "pass": "boomskii95",
         "name": "rumah_sakit"
     },
+    "mongodb":{
+        "uri": "mongodb://localhost:27017",
+        "database": "log",
+        "collection": "log data"
+    },
     "jwt":{
         "secret": "kepo",
         "expired": "24"

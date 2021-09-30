@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"backend/controllers/doctor"
+	"backend/mvc/controllers/doctor"
 
 	"github.com/labstack/echo/v4"
 )

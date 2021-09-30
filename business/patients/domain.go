@@ -2,11 +2,12 @@ package patients
 
 import (
 	"context"
+	"database/sql"
 	"time"
 )
 
 type Domain struct {
-	Id            int
+	ID            uint
 	Email         string
 	Password      string
 	Name          string
@@ -16,8 +17,9 @@ type Domain struct {
 	NoBPJS        string
 	Token         string
 	ContactPerson string
-	CreateAt      time.Time
-	UpdateAt      time.Time
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	DeletedAt     sql.NullTime
 }
 
 type Usecase interface {

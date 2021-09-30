@@ -1,8 +1,8 @@
 package main
 
 import (
-	"backend/configs"
-	"backend/routes"
+	"backend/mvc/configs"
+	"backend/mvc/routes"
 	"log"
 	"net/http"
 )
