@@ -2,11 +2,12 @@ package doctors
 
 import (
 	"context"
+	"database/sql"
 	"time"
 )
 
 type Domain struct {
-	Id            int
+	ID            uint
 	Email         string
 	Password      string
 	Name          string
@@ -16,18 +17,22 @@ type Domain struct {
 	DoctorJob     string
 	Token         string
 	ContactPerson string
-	CreateAt      time.Time
-	UpdateAt      time.Time
+	// Schedules     []schedules.Domain
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt sql.NullTime
 }
 
 type Usecase interface {
 	Login(ctx context.Context, domain Domain) (Domain, error)
 	Register(ctx context.Context, domain Domain) (Domain, error)
 	Update(ctx context.Context, domain Domain) (Domain, error)
+	// AddSchedule(ctx context.Context, doctorId, scheduleId uint) ([]uint, error)
 }
 
 type Repository interface {
 	Login(ctx context.Context, domain Domain) (Domain, error)
 	Register(ctx context.Context, domain Domain) (Domain, error)
 	Update(ctx context.Context, domain Domain) (Domain, error)
+	// AddSchedule(ctx context.Context, domain Domain, doctorId, scheduleId uint) ([]uint, error)
 }

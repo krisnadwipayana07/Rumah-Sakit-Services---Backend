@@ -6,19 +6,19 @@ import (
 	"time"
 )
 
-type DoctorUsecase struct {
+type PatientsUsecase struct {
 	Repo           Repository
 	contextTimeout time.Duration
 }
 
-func NewDoctorUsecase(repo Repository, timeout time.Duration) Usecase {
-	return &DoctorUsecase{
+func NewPatientsUsecase(repo Repository, timeout time.Duration) Usecase {
+	return &PatientsUsecase{
 		Repo:           repo,
 		contextTimeout: timeout,
 	}
 }
 
-func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, error) {
+func (uc *PatientsUsecase) Register(ctx context.Context, domain Domain) (Domain, error) {
 
 	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
@@ -52,16 +52,9 @@ func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 	return user, nil
 }
 
-func (uc *DoctorUsecase) Update(ctx context.Context, domain Domain) (Domain, error) {
-
-	if domain.Id == 0 {
-		return Domain{}, errors.New("id empty")
-	}
+func (uc *PatientsUsecase) Update(ctx context.Context, domain Domain) (Domain, error) {
 	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
-	}
-	if domain.Password == "" {
-		return Domain{}, errors.New("password empty")
 	}
 	if domain.Name == "" {
 		return Domain{}, errors.New("name empty")
@@ -89,7 +82,7 @@ func (uc *DoctorUsecase) Update(ctx context.Context, domain Domain) (Domain, err
 	return user, nil
 }
 
-func (uc *DoctorUsecase) Login(ctx context.Context, domain Domain) (Domain, error) {
+func (uc *PatientsUsecase) Login(ctx context.Context, domain Domain) (Domain, error) {
 	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
 	}

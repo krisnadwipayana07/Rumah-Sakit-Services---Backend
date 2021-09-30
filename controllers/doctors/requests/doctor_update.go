@@ -3,7 +3,7 @@ package requests
 import "backend/business/doctors"
 
 type DoctorUpdate struct {
-	Id            int    `json:"id"`
+	Id            uint   `json:"id"`
 	Email         string `json:"email"`
 	Password      string `json:"password"`
 	Name          string `json:"name"`
@@ -17,7 +17,7 @@ type DoctorUpdate struct {
 
 func (doctorUpdate *DoctorUpdate) ToDomain() doctors.Domain {
 	return doctors.Domain{
-		Id:            doctorUpdate.Id,
+		ID:            doctorUpdate.Id,
 		Email:         doctorUpdate.Email,
 		Password:      doctorUpdate.Password,
 		Name:          doctorUpdate.Name,

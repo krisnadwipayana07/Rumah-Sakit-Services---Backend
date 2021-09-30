@@ -2,9 +2,22 @@ package main
 
 import (
 	"backend/app/routes"
+
 	_doctorUsecase "backend/business/doctors"
+	_patientUsecase "backend/business/patients"
+	_scheduleUsecase "backend/business/schedules"
+	_visitorUsecase "backend/business/visitors"
+
 	_doctorControllers "backend/controllers/doctors"
+	_patientControllers "backend/controllers/patients"
+	_scheduleControllers "backend/controllers/schedules"
+	_visitorControllers "backend/controllers/visitors"
+
 	_doctordb "backend/drivers/databases/doctors"
+	_patientdb "backend/drivers/databases/patients"
+	_scheduledb "backend/drivers/databases/schedules"
+	_visitordb "backend/drivers/databases/visitors"
+
 	_mysqlDriver "backend/drivers/mysql"
 	"log"
 	"time"
@@ -27,6 +40,10 @@ func init() {
 
 func DBMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_doctordb.Doctors{})
+	db.AutoMigrate(&_patientdb.Patients{})
+	db.AutoMigrate(&_scheduledb.Schedules{})
+	db.AutoMigrate(&_visitordb.Visitors{})
+
 }
 
 func main() {
@@ -39,6 +56,7 @@ func main() {
 	}
 
 	Conn := configDB.InitialDB()
+	// db, err := mongodb.Connect(ctx)
 	DBMigrate(Conn)
 
 	e := echo.New()
@@ -48,10 +66,28 @@ func main() {
 	doctorUseCase := _doctorUsecase.NewDoctorUsecase(doctorRepository, timeoutContext)
 	DoctorController := _doctorControllers.NewDoctorController(doctorUseCase)
 
+	patientRepository := _patientdb.NewMysqlPatientRepository(Conn)
+	patientUsecase := _patientUsecase.NewPatientsUsecase(patientRepository, timeoutContext)
+	PatientController := _patientControllers.NewPatientController(patientUsecase)
+
+	scheduleRepository := _scheduledb.NewMysqlSchedulesRepository(Conn)
+	scheduleUsecase := _scheduleUsecase.NewSquedulesUsecase(scheduleRepository, timeoutContext)
+	ScheduleController := _scheduleControllers.NewScheduleController(scheduleUsecase)
+
+	visitorRepository := _visitordb.NewMysqlVisitorRepository(Conn)
+	visitorUsecase := _visitorUsecase.NewVisitorUsecase(visitorRepository, timeoutContext)
+	VisitorController := _visitorControllers.NewVisitorController(visitorUsecase)
+
 	routesInit := routes.ControllerList{
-		DoctorController: *DoctorController,
+		DoctorController:   *DoctorController,
+		PatientController:  *PatientController,
+		ScheduleController: *ScheduleController,
+		VisitorController:  *VisitorController,
 	}
 
-	routesInit.RouteRegister(e)
+	routesInit.DoctorRouteRegister(e, timeoutContext)
+	routesInit.PatientRouteRegister(e, timeoutContext)
+	routesInit.ScheduleRouteRegister(e, timeoutContext)
+	routesInit.VisitorRoute(e, timeoutContext)
 	log.Fatal(e.Start(viper.GetString("server.address")))
 }

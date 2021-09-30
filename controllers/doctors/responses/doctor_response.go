@@ -2,27 +2,29 @@ package responses
 
 import (
 	"backend/business/doctors"
+	"backend/business/schedules"
 	"time"
 )
 
 type DoctorResponse struct {
-	Id            int       `json:"id"`
-	Email         string    `json:"email"`
-	Password      string    `json:"password"`
-	Name          string    `json:"name"`
-	Address       string    `json:"address"`
-	Nip           string    `json:"nip"`
-	Description   string    `json:"description"`
-	DoctorJob     string    `json:"doctorJob"`
-	Token         string    `json:"token"`
-	ContactPerson string    `json:"contactPerson"`
-	CreateAt      time.Time `json:"createAt"`
-	UpdateAt      time.Time `json:"updateAt"`
+	Id            uint               `json:"id"`
+	Email         string             `json:"email"`
+	Password      string             `json:"password"`
+	Name          string             `json:"name"`
+	Address       string             `json:"address"`
+	Nip           string             `json:"nip"`
+	Description   string             `json:"description"`
+	DoctorJob     string             `json:"doctorJob"`
+	Token         string             `json:"token"`
+	ContactPerson string             `json:"contactPerson"`
+	Schedules     []schedules.Domain `json:"schedules"`
+	CreatedAt     time.Time          `json:"createdAt"`
+	UpdatedAt     time.Time          `json:"updatedAt"`
 }
 
 func FromDomain(domain doctors.Domain) DoctorResponse {
 	return DoctorResponse{
-		Id:            domain.Id,
+		Id:            domain.ID,
 		Email:         domain.Email,
 		Password:      domain.Password,
 		Name:          domain.Name,
@@ -31,7 +33,7 @@ func FromDomain(domain doctors.Domain) DoctorResponse {
 		Description:   domain.Description,
 		DoctorJob:     domain.DoctorJob,
 		ContactPerson: domain.ContactPerson,
-		CreateAt:      domain.CreateAt,
-		UpdateAt:      domain.UpdateAt,
+		CreatedAt:     domain.CreatedAt,
+		UpdatedAt:     domain.UpdatedAt,
 	}
 }

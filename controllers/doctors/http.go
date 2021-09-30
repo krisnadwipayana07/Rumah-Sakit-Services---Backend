@@ -60,3 +60,18 @@ func (doctorController DoctorController) Register(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(doctor))
 }
+
+// func (doctorController DoctorController) AddSchedule(c echo.Context) error {
+// 	ctx := c.Request().Context()
+// 	addSchedule := requests.AddScheduleDoctor{}
+// 	if err := c.Bind(&addSchedule); err != nil {
+// 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+// 	}
+
+// 	schedule, err := doctorController.DoctorUseCase.AddSchedule(ctx, addSchedule.DoctorId, addSchedule.ScheduleId)
+// 	if err != nil {
+// 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+// 	}
+
+// 	return controllers.NewSuccesResponse(c, requests.FromRequest(schedule[0], schedule[1]))
+// }

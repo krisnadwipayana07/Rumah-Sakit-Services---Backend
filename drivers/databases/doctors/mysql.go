@@ -31,37 +31,21 @@ func (rep *MysqlDoctorRepository) Login(ctx context.Context, domain doctors.Doma
 
 func (rep *MysqlDoctorRepository) Update(ctx context.Context, domain doctors.Domain) (doctors.Domain, error) {
 	var doctor Doctors
-	var doctorUpdate Doctors
 
-	doctorUpdate.Name = domain.Name
-	doctorUpdate.Address = domain.Address
-	doctorUpdate.Nip = domain.Nip
-	doctorUpdate.DoctorJob = doctor.DoctorJob
-	doctorUpdate.Email = doctor.Email
-	doctorUpdate.Description = doctor.Description
-	doctorUpdate.ContactPerson = doctor.ContactPerson
-	doctorUpdate.UpdateAt = time.Now()
+	raw := FromDomain(domain)
+	raw.UpdateAt = time.Now()
 
-	result := rep.Conn.Model(&doctor).Where("id = ?", domain.Id).Updates(doctorUpdate)
+	result := rep.Conn.Model(&doctor).Where("id = ?", raw.ID).Updates(raw)
 	if result.Error != nil {
 		return doctors.Domain{}, result.Error
 	}
 
-	return doctor.ToDomain(), nil
+	return raw.ToDomain(), nil
 }
 
 func (rep *MysqlDoctorRepository) Register(ctx context.Context, domain doctors.Domain) (doctors.Domain, error) {
-	var doctorInsert Doctors
-
-	doctorInsert.Email = domain.Email
-	doctorInsert.Password = domain.Password
-	doctorInsert.Name = domain.Name
-	doctorInsert.Address = domain.Address
-	doctorInsert.Nip = domain.Nip
-	doctorInsert.Description = domain.Description
-	doctorInsert.DoctorJob = domain.DoctorJob
-	doctorInsert.ContactPerson = domain.ContactPerson
-	doctorInsert.CreateAt = time.Now()
+	doctorInsert := FromDomain(domain)
+	doctorInsert.CreatedAt = time.Now()
 
 	result := rep.Conn.Create(&doctorInsert)
 	if result.Error != nil {
@@ -70,3 +54,34 @@ func (rep *MysqlDoctorRepository) Register(ctx context.Context, domain doctors.D
 
 	return doctorInsert.ToDomain(), nil
 }
+
+// func (rep *MysqlDoctorRepository) AddSchedule(ctx context.Context, domain doctors.Domain, doctorId, scheduleId uint) ([]uint, error) {
+// 	resultDoctor := FromDomain(domain)
+
+// 	resultSchedule := rep.Conn.Raw("SELECT * FROM `doctors` WHERE id = ?", doctorId).Save(&domain.Schedules)
+// 	if resultSchedule.Error != nil {
+// 		return []uint{}, resultSchedule.Error
+// 	}
+
+// 	result := rep.Conn.Model(&resultDoctor).Association("Schedules").Append(domain.Schedules)
+// 	if result != nil {
+// 		return []uint{}, result
+// 	}
+
+// 	return []uint{doctorId, scheduleId}, nil
+// }
+
+// func (rep *MysqlDoctorRepository) AddSchedule(ctx context.Context, domain doctors.Domain, doctorId, scheduleId uint) ([]uint, error) {
+// 	type Relation struct {
+// 		DoctorsId   uint
+// 		SchedulesId uint
+// 	}
+// 	Relation.DoctorsId = doctorId
+// 	Relation.SchedulesId = scheduleId
+// 	result := rep.Conn.Model(&domain).Association("doctor_schedules").Append()
+// 	if result != nil {
+// 		return []uint{}, result
+// 	}
+
+// 	return []uint{doctorId, scheduleId}, nil
+// }
