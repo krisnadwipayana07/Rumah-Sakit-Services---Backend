@@ -38,21 +38,20 @@ func (uc *VisitorUsecase) AddVisitor(ctx context.Context, domain Domain) (Domain
 	}
 	return visitor, nil
 }
-func (uc *VisitorUsecase) RemoveVisitorToLog(ctx context.Context, domain Domain) (Domain, error) {
-	if domain.ID <= 0 {
-		return Domain{}, errors.New("id empty")
+func (uc *VisitorUsecase) RemoveVisitorToLog(ctx context.Context, log Log) (Log, error) {
+	if log.SchedulesId <= 0 {
+		return Log{}, errors.New("schedule id empty")
 	}
-	visitor, err := uc.Repo.AddVisitor(ctx, domain)
+	if log.PatientsId <= 0 {
+		return Log{}, errors.New("patient id empty")
+	}
+	visitor, err := uc.Repo.RemoveVisitorToLog(ctx, log)
 	if err != nil {
-		return Domain{}, err
+		return Log{}, err
 	}
 	return visitor, nil
 }
 func (uc *VisitorUsecase) ModificateVisitor(ctx context.Context, domain Domain) (Domain, error) {
-
-	// if domain.ID <= 0 {
-	// 	return Domain{}, errors.New("id empty")
-	// }
 	if domain.AntrianId <= 0 {
 		return Domain{}, errors.New("antrean Id empty")
 	}
@@ -66,17 +65,21 @@ func (uc *VisitorUsecase) ModificateVisitor(ctx context.Context, domain Domain) 
 		return Domain{}, errors.New("keluhan empty")
 	}
 
-	visitor, err := uc.Repo.AddVisitor(ctx, domain)
+	visitor, err := uc.Repo.ModificateVisitor(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}
 	return visitor, nil
 }
+
 func (uc *VisitorUsecase) ShowVisitor(ctx context.Context, domain Domain) (Domain, error) {
-	if domain.ID <= 0 {
-		return Domain{}, errors.New("id empty")
+	if domain.SchedulesId <= 0 {
+		return Domain{}, errors.New("schedule id empty")
 	}
-	visitor, err := uc.Repo.AddVisitor(ctx, domain)
+	if domain.PatientsId <= 0 {
+		return Domain{}, errors.New("patient id empty")
+	}
+	visitor, err := uc.Repo.ShowVisitor(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}

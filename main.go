@@ -43,6 +43,7 @@ func DBMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_patientdb.Patients{})
 	db.AutoMigrate(&_scheduledb.Schedules{})
 	db.AutoMigrate(&_visitordb.Visitors{})
+	db.AutoMigrate(&_visitordb.VisitorsLog{})
 
 }
 

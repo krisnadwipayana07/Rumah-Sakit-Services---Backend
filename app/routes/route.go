@@ -54,4 +54,8 @@ func (cl *ControllerList) VisitorRoute(e *echo.Echo, ctx time.Duration) {
 	// e.Use(middleware.BodyDump(middlewares.Log))
 	ev1 := e.Group("/api/v1/visitor")
 	ev1.POST("/add", cl.VisitorController.AddVisitor)
+	ev1.POST("/show", cl.VisitorController.ShowVisitor)
+	ev1.DELETE("/delete", cl.VisitorController.DeleteVisitor)
+	ev1.PUT("/update", cl.VisitorController.UpdateVisitor)
+
 }
