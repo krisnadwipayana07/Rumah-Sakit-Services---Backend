@@ -36,6 +36,7 @@ type Usecase interface {
 	CancelVisitor(ctx context.Context, domain Domain) (Domain, error)
 	DontCome(ctx context.Context, log Log) (Log, error)
 	ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error)
+	GetDetailSchedule(ctx context.Context, domain Domain) (uint, uint, error)
 	ShowLogOfPatient(ctx context.Context, log Log) ([]Log, error)
 }
 
@@ -47,5 +48,6 @@ type Repository interface {
 	CancelVisitor(ctx context.Context, domain Domain) (Domain, error)
 	DontCome(ctx context.Context, log Log) (Log, error)
 	ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error)
+	GetDetailSchedule(ctx context.Context, domain Domain) (uint, uint, error)
 	ShowLogOfPatient(ctx context.Context, log Log) ([]Log, error)
 }

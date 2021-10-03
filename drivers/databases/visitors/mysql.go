@@ -154,3 +154,16 @@ func (rep *MysqlVisitorRepository) ShowLogOfPatient(ctx context.Context, log vis
 	data := ToDomainListLog(record)
 	return data, nil
 }
+
+func (rep *MysqlVisitorRepository) GetDetailSchedule(ctx context.Context, domain visitors.Domain) (uint, uint, error) {
+	var lastPatient, totalPatient int64
+	err := rep.Conn.Table("visitors").Count(&totalPatient).Error
+	err1 := rep.Conn.Table("visitors").Select("antrian_id").Order("antrian_id asc").Find(&lastPatient).Error
+	if err != nil {
+		return 0, 0, err
+	}
+	if err1 != nil {
+		return 0, 0, err1
+	}
+	return uint(lastPatient), uint(totalPatient), nil
+}

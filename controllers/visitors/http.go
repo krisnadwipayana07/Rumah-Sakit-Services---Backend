@@ -147,3 +147,21 @@ func (ctrl VisitorController) GetLogPatient(c echo.Context) error {
 	}
 	return controllers.NewSuccesResponse(c, responVisitor)
 }
+
+func (ctrl VisitorController) GetScheduleDetails(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	req := requests.GetAllPatient{}
+	if err := c.Bind(&req); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	last, count, err := ctrl.VisitorUsecase.GetDetailSchedule(ctx, req.ToDomain())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	detailSchedule := responses.ScheduleDetail{}
+	detailSchedule.Last = last
+	detailSchedule.Count = count
+	return controllers.NewSuccesResponse(c, detailSchedule)
+}

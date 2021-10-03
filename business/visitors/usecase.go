@@ -135,3 +135,14 @@ func (uc *VisitorUsecase) ShowLogOfPatient(ctx context.Context, log Log) ([]Log,
 	}
 	return data, nil
 }
+
+func (uc *VisitorUsecase) GetDetailSchedule(ctx context.Context, domain Domain) (uint, uint, error) {
+	if domain.SchedulesId <= 0 {
+		return 0, 0, errors.New("schedule id empty")
+	}
+	last, count, err := uc.Repo.GetDetailSchedule(ctx, domain)
+	if err != nil {
+		return 0, 0, err
+	}
+	return last, count, nil
+}

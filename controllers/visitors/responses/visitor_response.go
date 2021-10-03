@@ -28,6 +28,11 @@ type VisitorLogResponse struct {
 	UpdateAt    time.Time `json:"updateAt"`
 }
 
+type ScheduleDetail struct {
+	Last  uint `json:"antrianInDoctor"`
+	Count uint `json:"totalPatient"`
+}
+
 func FromDomain(domain visitors.Domain) VisitorResponse {
 	return VisitorResponse{
 		// Id:          domain.ID,
