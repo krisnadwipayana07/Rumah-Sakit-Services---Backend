@@ -113,13 +113,13 @@ func (uc *VisitorUsecase) DontCome(ctx context.Context, log Log) (Log, error) {
 	return data, nil
 }
 
-// func (uc *VisitorUsecase) ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error) {
-// 	if domain.SchedulesId <= 0 {
-// 		return []Domain{}, errors.New("schedule id empty")
-// 	}
-// 	visitor, err := uc.Repo.ShowAllPatient(ctx, domain)
-// 	if err != nil {
-// 		return []Domain{}, err
-// 	}
-// 	return visitor, nil
-// }
+func (uc *VisitorUsecase) ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error) {
+	if domain.SchedulesId <= 0 {
+		return []Domain{}, errors.New("schedule id empty")
+	}
+	visitor, err := uc.Repo.ShowAllPatient(ctx, domain)
+	if err != nil {
+		return []Domain{}, err
+	}
+	return visitor, nil
+}

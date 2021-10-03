@@ -12,7 +12,7 @@ type Domain struct {
 	PatientsId  uint
 	AntrianId   uint
 	Keluhan     string
-	Patient     []patients.Domain
+	Patient     patients.Domain
 	CreateAt    time.Time
 	UpdateAt    time.Time
 }
@@ -35,7 +35,7 @@ type Usecase interface {
 	ShowVisitor(ctx context.Context, domain Domain) (Domain, error)
 	CancelVisitor(ctx context.Context, domain Domain) (Domain, error)
 	DontCome(ctx context.Context, log Log) (Log, error)
-	// ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error)
+	ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error)
 }
 
 type Repository interface {
@@ -45,5 +45,5 @@ type Repository interface {
 	ShowVisitor(ctx context.Context, domain Domain) (Domain, error)
 	CancelVisitor(ctx context.Context, domain Domain) (Domain, error)
 	DontCome(ctx context.Context, log Log) (Log, error)
-	// ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error)
+	ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error)
 }

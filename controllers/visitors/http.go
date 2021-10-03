@@ -110,21 +110,21 @@ func (visitorController VisitorController) DontCome(c echo.Context) error {
 	return controllers.NewSuccesResponse(c, responses.FromVisitorLog(data))
 }
 
-// func (ctrl VisitorController) FetchAllPatient(c echo.Context) error {
-// 	ctx := c.Request().Context()
+func (ctrl VisitorController) FetchAllPatient(c echo.Context) error {
+	ctx := c.Request().Context()
 
-// 	req := requests.GetAllPatient{}
-// 	if err := c.Bind(&req); err != nil {
-// 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
-// 	}
-// 	data, err := ctrl.VisitorUsecase.ShowAllPatient(ctx, req.ToDomain())
-// 	if err != nil {
-// 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
-// 	}
+	req := requests.GetAllPatient{}
+	if err := c.Bind(&req); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	data, err := ctrl.VisitorUsecase.ShowAllPatient(ctx, req.ToDomain())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
 
-// 	responVisitor := []responses.VisitorResponse{}
-// 	for _, value := range data {
-// 		responVisitor = append(responVisitor, responses.FromDomain(value))
-// 	}
-// 	return controllers.NewSuccesResponse(c, responVisitor)
-// }
+	responVisitor := []responses.VisitorResponse{}
+	for _, value := range data {
+		responVisitor = append(responVisitor, responses.FromDomain(value))
+	}
+	return controllers.NewSuccesResponse(c, responVisitor)
+}

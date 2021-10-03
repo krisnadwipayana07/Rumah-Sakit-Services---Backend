@@ -88,7 +88,7 @@ func (rep *MysqlVisitorRepository) ModificateVisitor(ctx context.Context, domain
 
 func (rep *MysqlVisitorRepository) ShowVisitor(ctx context.Context, domain visitors.Domain) (visitors.Domain, error) {
 	getId := FromDomain(domain)
-	result := rep.Conn.Preload("Schedule").Preload("Patients").Find(&getId)
+	result := rep.Conn.Preload("Patient").Find(&getId)
 	if result.Error != nil {
 		return visitors.Domain{}, result.Error
 	}
@@ -133,12 +133,13 @@ func (rep *MysqlVisitorRepository) DontCome(ctx context.Context, domain visitors
 	return convertToLog.ToDomainLog(), nil
 }
 
-// func (rep *MysqlVisitorRepository) ShowAllPatient(ctx context.Context, domain visitors.Domain) ([]visitors.Domain, error) {
-// 	visitorData := []visitors.Domain{}
-// 	visitor := FromDomain(domain)
-// 	result := rep.Conn.Preload("Patient").Where("schedules_id = ?", visitor.SchedulesId).Find(&visitorData)
-// 	if result.Error != nil {
-// 		return []visitors.Domain{}, result.Error
-// 	}
-// 	return visitorData, nil
-// }
+func (rep *MysqlVisitorRepository) ShowAllPatient(ctx context.Context, domain visitors.Domain) ([]visitors.Domain, error) {
+	visitorData := []Visitors{}
+	visitor := FromDomain(domain)
+	result := rep.Conn.Preload("Patient").Where("schedules_id = ?", visitor.SchedulesId).Order("antrian_id asc").Find(&visitorData)
+	if result.Error != nil {
+		return []visitors.Domain{}, result.Error
+	}
+	data := ToDomainList(visitorData)
+	return data, nil
+}
