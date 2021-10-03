@@ -62,5 +62,6 @@ func (cl *ControllerList) VisitorRoute(e *echo.Echo, ctx time.Duration) {
 	ev1.DELETE("/cancel", cl.VisitorController.CancelVisitor)
 	ev1.DELETE("/dontCome", cl.VisitorController.DontCome)
 	ev1.GET("/getAllPatient", cl.VisitorController.FetchAllPatient)
+	ev1.GET("/showAllLog", cl.VisitorController.GetLogPatient)
 
 }

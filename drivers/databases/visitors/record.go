@@ -65,6 +65,14 @@ func FromDomain(domain visitors.Domain) Visitors {
 	}
 }
 
+func ToDomainListLog(record []VisitorsLog) []visitors.Log {
+	var returnValue []visitors.Log
+	for _, value := range record {
+		returnValue = append(returnValue, value.ToDomainLog())
+	}
+	return returnValue
+}
+
 func (visitor *VisitorsLog) ToDomainLog() visitors.Log {
 	return visitors.Log{
 		AntrianId:   visitor.AntrianId,

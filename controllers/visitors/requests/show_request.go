@@ -13,3 +13,9 @@ func (showReq *ShowRequest) ToDomain() visitors.Domain {
 		PatientsId:  showReq.PatientsId,
 	}
 }
+
+func (req *ShowRequest) ToLog() visitors.Log {
+	return visitors.Log{
+		PatientsId: req.PatientsId,
+	}
+}

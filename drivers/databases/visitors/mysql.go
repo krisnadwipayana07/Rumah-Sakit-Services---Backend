@@ -143,3 +143,14 @@ func (rep *MysqlVisitorRepository) ShowAllPatient(ctx context.Context, domain vi
 	data := ToDomainList(visitorData)
 	return data, nil
 }
+
+func (rep *MysqlVisitorRepository) ShowLogOfPatient(ctx context.Context, log visitors.Log) ([]visitors.Log, error) {
+	record := []VisitorsLog{}
+	mail := FromDomainLog(log)
+	result := rep.Conn.Where("patients_id = ?", mail.PatientsId).Find(&record)
+	if result.Error != nil {
+		return []visitors.Log{}, result.Error
+	}
+	data := ToDomainListLog(record)
+	return data, nil
+}

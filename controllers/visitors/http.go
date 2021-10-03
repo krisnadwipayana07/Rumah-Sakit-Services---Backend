@@ -128,3 +128,22 @@ func (ctrl VisitorController) FetchAllPatient(c echo.Context) error {
 	}
 	return controllers.NewSuccesResponse(c, responVisitor)
 }
+
+func (ctrl VisitorController) GetLogPatient(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	req := requests.ShowRequest{}
+	if err := c.Bind(&req); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	data, err := ctrl.VisitorUsecase.ShowLogOfPatient(ctx, req.ToLog())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	responVisitor := []responses.VisitorLogResponse{}
+	for _, value := range data {
+		responVisitor = append(responVisitor, responses.FromVisitorLog(value))
+	}
+	return controllers.NewSuccesResponse(c, responVisitor)
+}
