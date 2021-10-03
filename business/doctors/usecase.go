@@ -89,6 +89,14 @@ func (uc *DoctorUsecase) Login(ctx context.Context, domain Domain) (Domain, erro
 	return user, nil
 }
 
+func (uc *DoctorUsecase) ShowAll(ctx context.Context) ([]Domain, error) {
+	allData, err := uc.Repo.ShowAll(ctx)
+	if err != nil {
+		return []Domain{}, err
+	}
+	return allData, nil
+}
+
 // func (uc *DoctorUsecase) AddSchedule(ctx context.Context, doctorId, scheduleId uint) ([]uint, error) {
 // 	if scheduleId <= 0 {
 // 		return []uint{0, 0}, errors.New("schedule id empty")

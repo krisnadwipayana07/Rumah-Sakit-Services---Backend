@@ -1,6 +1,7 @@
 package schedules
 
 import (
+	"backend/business/patients"
 	"context"
 	"database/sql"
 	"time"
@@ -14,9 +15,22 @@ type Domain struct {
 	TanggalJaga time.Time
 	JamAwal     string
 	JamAkhir    string
+	Patients    []patients.Domain
+	Doctors     Doctors
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   sql.NullTime
+}
+
+type Doctors struct {
+	ID            uint
+	Email         string
+	Name          string
+	Nip           string
+	Description   string
+	DoctorJob     string
+	ContactPerson string
+	CreatedAt     time.Time
 }
 
 // type Domain struct {
@@ -34,7 +48,8 @@ type Usecase interface {
 	Remove(ctx context.Context, domain Domain) (Domain, error)
 	Modificate(ctx context.Context, domain Domain) (Domain, error)
 	Show(ctx context.Context, domain Domain) (Domain, error)
-	GetAll(ctx context.Context) (Domain, error)
+	GetAllInOneDoctor(ctx context.Context, domain Domain) ([]Domain, error)
+	GetAll(ctx context.Context) ([]Domain, error)
 	// InsertDoctor(ctx context.Context, domain Domain) (Domain, error)
 }
 
@@ -43,6 +58,8 @@ type Repository interface {
 	Remove(ctx context.Context, domain Domain) (Domain, error)
 	Modificate(ctx context.Context, domain Domain) (Domain, error)
 	Show(ctx context.Context, domain Domain) (Domain, error)
-	GetAll(ctx context.Context, domain Domain) (Domain, error)
+	GetAllInOneDoctor(ctx context.Context, domain Domain) ([]Domain, error)
+	GetAll(ctx context.Context) ([]Domain, error)
+
 	// InsertDoctor(ctx context.Context, domain Domain) (Domain, error)
 }

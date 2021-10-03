@@ -88,11 +88,57 @@ func (rep *MysqlVisitorRepository) ModificateVisitor(ctx context.Context, domain
 
 func (rep *MysqlVisitorRepository) ShowVisitor(ctx context.Context, domain visitors.Domain) (visitors.Domain, error) {
 	getId := FromDomain(domain)
-	result := rep.Conn.Joins(
-		"JOIN patients ON patients.id =visitors.patients_id").Joins(
-		"JOIN schedules ON schedules.id = visitors.schedules_id").Find(&getId)
+	result := rep.Conn.Preload("Schedule").Preload("Patients").Find(&getId)
 	if result.Error != nil {
 		return visitors.Domain{}, result.Error
 	}
 	return getId.ToDomain(), nil
 }
+func (rep *MysqlVisitorRepository) CancelVisitor(ctx context.Context, domain visitors.Domain) (visitors.Domain, error) {
+	getId := FromDomain(domain)
+	result := rep.Conn.Delete(&getId)
+	if result.Error != nil {
+		return visitors.Domain{}, result.Error
+	}
+	return getId.ToDomain(), nil
+}
+func (rep *MysqlVisitorRepository) DontCome(ctx context.Context, domain visitors.Log) (visitors.Log, error) {
+	getId := FromDomainLog(domain)
+
+	trx := rep.Conn.Begin()
+	var visitor Visitors
+	visitor.PatientsId = getId.PatientsId
+	visitor.SchedulesId = getId.SchedulesId
+
+	result := trx.Find(&visitor)
+	if result.RowsAffected == 0 {
+		return visitors.Log{}, result.Error
+	}
+	if result.Error != nil {
+		return visitors.Log{}, result.Error
+	}
+
+	convertToLog := FromVisitorToLog(visitor)
+	convertToLog.Message = getId.Message
+	tambahLog := trx.Create(&convertToLog)
+	if tambahLog.Error != nil {
+		return visitors.Log{}, trx.Error
+	}
+	trx.SavePoint("sp1")
+	resultHapusVisitor := trx.Delete(&visitor)
+	if resultHapusVisitor.Error != nil {
+		trx.RollbackTo("sp1")
+	}
+	trx.Commit()
+	return convertToLog.ToDomainLog(), nil
+}
+
+// func (rep *MysqlVisitorRepository) ShowAllPatient(ctx context.Context, domain visitors.Domain) ([]visitors.Domain, error) {
+// 	visitorData := []visitors.Domain{}
+// 	visitor := FromDomain(domain)
+// 	result := rep.Conn.Preload("Patient").Where("schedules_id = ?", visitor.SchedulesId).Find(&visitorData)
+// 	if result.Error != nil {
+// 		return []visitors.Domain{}, result.Error
+// 	}
+// 	return visitorData, nil
+// }

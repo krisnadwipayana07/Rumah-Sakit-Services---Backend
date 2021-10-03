@@ -20,8 +20,8 @@ type Visitors struct {
 type VisitorsLog struct {
 	// ID          uint `gorm:"primaryKey"`
 	// DoctorId   uint `gorm:"primaryKey"` // --  docktor
-	SchedulesId uint `gorm:"primaryKey"` //object shcedule
-	PatientsId  uint `gorm:"primaryKey"` // patients
+	SchedulesId uint
+	PatientsId  uint
 	AntrianId   uint
 	Keluhan     string
 	Solusi      string
@@ -38,10 +38,12 @@ func (visitor *Visitors) ToDomain() visitors.Domain {
 		SchedulesId: visitor.SchedulesId,
 		PatientsId:  visitor.PatientsId,
 		Keluhan:     visitor.Keluhan,
-		CreateAt:    visitor.CreateAt,
-		UpdateAt:    visitor.UpdateAt,
+		// Patient:     visitor.ToDomain().Patient,
+		CreateAt: visitor.CreateAt,
+		UpdateAt: visitor.UpdateAt,
 	}
 }
+
 func FromDomain(domain visitors.Domain) Visitors {
 	return Visitors{
 		// ID:         domain.ID,

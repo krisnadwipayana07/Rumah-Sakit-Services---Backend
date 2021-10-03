@@ -61,6 +61,20 @@ func (doctorController DoctorController) Register(c echo.Context) error {
 	return controllers.NewSuccesResponse(c, responses.FromDomain(doctor))
 }
 
+func (doctorController DoctorController) GetAll(c echo.Context) error {
+	ctx := c.Request().Context()
+	data, err := doctorController.DoctorUseCase.ShowAll(ctx)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	var returnValue []responses.DoctorResponse
+	for _, value := range data {
+		returnValue = append(returnValue, responses.FromDomain(value))
+	}
+	return controllers.NewSuccesResponse(c, returnValue)
+}
+
 // func (doctorController DoctorController) AddSchedule(c echo.Context) error {
 // 	ctx := c.Request().Context()
 // 	addSchedule := requests.AddScheduleDoctor{}

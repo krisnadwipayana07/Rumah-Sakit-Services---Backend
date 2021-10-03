@@ -85,3 +85,41 @@ func (uc *VisitorUsecase) ShowVisitor(ctx context.Context, domain Domain) (Domai
 	}
 	return visitor, nil
 }
+
+func (uc *VisitorUsecase) CancelVisitor(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.SchedulesId <= 0 {
+		return Domain{}, errors.New("schedule id empty")
+	}
+	if domain.PatientsId <= 0 {
+		return Domain{}, errors.New("patient id empty")
+	}
+	data, err := uc.Repo.CancelVisitor(ctx, domain)
+	if err != nil {
+		return Domain{}, err
+	}
+	return data, nil
+}
+func (uc *VisitorUsecase) DontCome(ctx context.Context, log Log) (Log, error) {
+	if log.SchedulesId <= 0 {
+		return Log{}, errors.New("schedule id empty")
+	}
+	if log.PatientsId <= 0 {
+		return Log{}, errors.New("patient id empty")
+	}
+	data, err := uc.Repo.DontCome(ctx, log)
+	if err != nil {
+		return Log{}, err
+	}
+	return data, nil
+}
+
+// func (uc *VisitorUsecase) ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error) {
+// 	if domain.SchedulesId <= 0 {
+// 		return []Domain{}, errors.New("schedule id empty")
+// 	}
+// 	visitor, err := uc.Repo.ShowAllPatient(ctx, domain)
+// 	if err != nil {
+// 		return []Domain{}, err
+// 	}
+// 	return visitor, nil
+// }
