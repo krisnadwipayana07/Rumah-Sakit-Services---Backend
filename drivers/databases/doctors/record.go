@@ -3,7 +3,6 @@ package doctors
 import (
 	"backend/business/doctors"
 	"backend/drivers/databases/schedules"
-
 	"time"
 
 	"gorm.io/gorm"
