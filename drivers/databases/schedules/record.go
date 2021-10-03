@@ -16,11 +16,30 @@ type Schedules struct {
 	TanggalJaga time.Time
 	JamAwal     string
 	JamAkhir    string
-	// Doctor      []doctors.Doctors   `gorm:"foreignKey:DoctorId"`
-	Visitor   []patients.Patients `gorm:"many2many:visitors;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	Patients    []patients.Patients `gorm:"many2many:visitors;"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	Doctor      Doctors        `gorm:"foreignKey:DoctorId"`
+	// Doctor    []doctors.Doctors `gorm:"foreignKey:DoctorId"`
+}
+type Doctors struct {
+	ID            uint   `gorm:"primaryKey"`
+	Email         string `gorm:"unique"`
+	Name          string
+	Nip           string
+	Description   string
+	DoctorJob     string
+	ContactPerson string
+	CreatedAt     time.Time
+}
+
+func ToDomainList(record []Schedules) []schedules.Domain {
+	var returnValue []schedules.Domain
+	for _, value := range record {
+		returnValue = append(returnValue, value.ToDomain())
+	}
+	return returnValue
 }
 
 func (schedule *Schedules) ToDomain() schedules.Domain {
@@ -34,6 +53,15 @@ func (schedule *Schedules) ToDomain() schedules.Domain {
 		JamAkhir:    schedule.JamAkhir,
 		CreatedAt:   schedule.CreatedAt,
 		UpdatedAt:   schedule.UpdatedAt,
+		Doctors: schedules.Doctors{
+			ID:            schedule.DoctorId,
+			Email:         schedule.Doctor.Email,
+			Name:          schedule.Doctor.Name,
+			Nip:           schedule.Doctor.Nip,
+			Description:   schedule.Doctor.Description,
+			DoctorJob:     schedule.Doctor.DoctorJob,
+			ContactPerson: schedule.Doctor.ContactPerson,
+		},
 	}
 }
 

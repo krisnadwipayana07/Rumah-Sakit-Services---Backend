@@ -3,6 +3,7 @@ package doctors
 import (
 	"backend/business/doctors"
 	"backend/drivers/databases/schedules"
+
 	"time"
 
 	"gorm.io/gorm"
@@ -20,12 +21,12 @@ type Doctors struct {
 	Token         string
 	ContactPerson string
 	Schedule      []schedules.Schedules `gorm:"foreignKey:DoctorId"`
+	CreatedAt     time.Time
+	UpdateAt      time.Time
+	DeletedAt     gorm.DeletedAt `gorm:"index"`
 	// Visitors		[]visitors.Visitors `gorm:"foreignKey:DoctorId;references:ID"`
 	// Schedules []schedules.Schedules `gorm:"many2many:doctor_schedules"`
 	// Visitors  []patients.Patients `gorm:"many2many:visitors;foreignKey:ID;joinForeignKey:DoctorId;References:ID;joinReferences:PatientId"`
-	CreatedAt time.Time
-	UpdateAt  time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (doctor *Doctors) ToDomain() doctors.Domain {
@@ -62,4 +63,12 @@ func FromDomain(domain doctors.Domain) Doctors {
 		UpdateAt:      domain.UpdatedAt,
 		// Schedules:     []schedules.Schedules{},
 	}
+}
+
+func ToDomainList(record []Doctors) []doctors.Domain {
+	var returnValue []doctors.Domain
+	for _, value := range record {
+		returnValue = append(returnValue, value.ToDomain())
+	}
+	return returnValue
 }

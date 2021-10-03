@@ -66,7 +66,7 @@ func (rep *MysqlSchedulesRepository) Modificate(ctx context.Context, domain sche
 func (rep *MysqlSchedulesRepository) Show(ctx context.Context, domain schedules.Domain) (schedules.Domain, error) {
 	findSchedules := FromDomain(domain)
 
-	result := rep.Conn.Find(&findSchedules).Where("id = ?", findSchedules.ID)
+	result := rep.Conn.Preload("Patients").Find(&findSchedules).Where("id = ?", findSchedules.ID)
 	if result.Error != nil {
 		return schedules.Domain{}, result.Error
 	}
@@ -74,14 +74,26 @@ func (rep *MysqlSchedulesRepository) Show(ctx context.Context, domain schedules.
 	return findSchedules.ToDomain(), nil
 }
 
-func (rep *MysqlSchedulesRepository) GetAll(ctx context.Context, domain schedules.Domain) (schedules.Domain, error) {
-	record := FromDomain(domain)
-	result := rep.Conn.Find(&record)
+func (rep *MysqlSchedulesRepository) GetAllInOneDoctor(ctx context.Context, domain schedules.Domain) ([]schedules.Domain, error) {
+	var record []Schedules
+	result := rep.Conn.Where("doctor_id = ?", domain.DoctorId).Find(&record)
 	if result.Error != nil {
-		return schedules.Domain{}, result.Error
+		return []schedules.Domain{}, result.Error
 	}
-	// fmt.Println(record)
-	return record.ToDomain(), nil
+
+	returnValue := ToDomainList(record)
+	return returnValue, nil
+}
+
+func (rep *MysqlSchedulesRepository) GetAll(ctx context.Context) ([]schedules.Domain, error) {
+	var record []Schedules
+	result := rep.Conn.Preload("Doctor").Preload("Patients").Find(&record)
+	if result.Error != nil {
+		return []schedules.Domain{}, result.Error
+	}
+
+	returnValue := ToDomainList(record)
+	return returnValue, nil
 }
 
 // func (rep *MysqlSchedulesRepository) InsertDoctor(ctx context.Context, domain schedules.Domain) (schedules.Domain, error) {

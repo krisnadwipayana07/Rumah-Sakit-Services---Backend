@@ -55,6 +55,16 @@ func (rep *MysqlDoctorRepository) Register(ctx context.Context, domain doctors.D
 	return doctorInsert.ToDomain(), nil
 }
 
+func (rep *MysqlDoctorRepository) ShowAll(ctx context.Context) ([]doctors.Domain, error) {
+	var allDoctors []Doctors
+	err := rep.Conn.Find(&allDoctors).Error
+	if err != nil {
+		return []doctors.Domain{}, err
+	}
+	convert := ToDomainList(allDoctors)
+	return convert, nil
+}
+
 // func (rep *MysqlDoctorRepository) AddSchedule(ctx context.Context, domain doctors.Domain, doctorId, scheduleId uint) ([]uint, error) {
 // 	resultDoctor := FromDomain(domain)
 

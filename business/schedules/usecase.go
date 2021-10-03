@@ -58,6 +58,9 @@ func (uc *SquedulesUsecase) Modificate(ctx context.Context, domain Domain) (Doma
 	if domain.ID <= 0 {
 		return Domain{}, errors.New("id empty")
 	}
+	if domain.DoctorId <= 0 {
+		return Domain{}, errors.New("doctorId empty")
+	}
 	if domain.Room == "" {
 		return Domain{}, errors.New("room empty")
 	}
@@ -90,11 +93,20 @@ func (uc *SquedulesUsecase) Show(ctx context.Context, domain Domain) (Domain, er
 	return squedule, nil
 }
 
-func (uc *SquedulesUsecase) GetAll(ctx context.Context) (Domain, error) {
-	var domain Domain
-	allData, err := uc.Repo.GetAll(ctx, domain)
+func (uc *SquedulesUsecase) GetAllInOneDoctor(ctx context.Context, domain Domain) ([]Domain, error) {
+	if domain.DoctorId <= 0 {
+		return []Domain{}, errors.New("doctorId empty")
+	}
+	allData, err := uc.Repo.GetAllInOneDoctor(ctx, domain)
 	if err != nil {
-		return Domain{}, err
+		return []Domain{}, err
+	}
+	return allData, nil
+}
+func (uc *SquedulesUsecase) GetAll(ctx context.Context) ([]Domain, error) {
+	allData, err := uc.Repo.GetAll(ctx)
+	if err != nil {
+		return []Domain{}, err
 	}
 	return allData, nil
 }

@@ -89,13 +89,35 @@ func (schedulesController ScheduleController) Remove(c echo.Context) error {
 
 }
 
+func (schedulesController ScheduleController) GetAllInOneDoctor(c echo.Context) error {
+	getId := requests.GetByDoctor{}
+	c.Bind(&getId)
+
+	ctx := c.Request().Context()
+	data, err := schedulesController.SchedulesUseCase.GetAllInOneDoctor(ctx, getId.ToDomain())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	var returnValue []responses.ScheduleResponse
+	for _, value := range data {
+		returnValue = append(returnValue, responses.FromDomain(value))
+	}
+	return controllers.NewSuccesResponse(c, returnValue)
+}
+
 func (schedulesController ScheduleController) GetAll(c echo.Context) error {
 	ctx := c.Request().Context()
 	data, err := schedulesController.SchedulesUseCase.GetAll(ctx)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return controllers.NewSuccesResponse(c, data)
+
+	var returnValue []responses.ScheduleResponse
+	for _, value := range data {
+		returnValue = append(returnValue, responses.FromDomain(value))
+	}
+	return controllers.NewSuccesResponse(c, returnValue)
 }
 
 // func (schedulesController ScheduleController) InsertDoctor(c echo.Context) error {
