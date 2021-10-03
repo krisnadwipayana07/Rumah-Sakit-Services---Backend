@@ -88,7 +88,7 @@ func (rep *MysqlVisitorRepository) ModificateVisitor(ctx context.Context, domain
 
 func (rep *MysqlVisitorRepository) ShowVisitor(ctx context.Context, domain visitors.Domain) (visitors.Domain, error) {
 	getId := FromDomain(domain)
-	result := rep.Conn.Preload("Schedule").Preload("Patients").Find(&getId)
+	result := rep.Conn.Preload("Patient").Find(&getId)
 	if result.Error != nil {
 		return visitors.Domain{}, result.Error
 	}
@@ -133,12 +133,37 @@ func (rep *MysqlVisitorRepository) DontCome(ctx context.Context, domain visitors
 	return convertToLog.ToDomainLog(), nil
 }
 
-// func (rep *MysqlVisitorRepository) ShowAllPatient(ctx context.Context, domain visitors.Domain) ([]visitors.Domain, error) {
-// 	visitorData := []visitors.Domain{}
-// 	visitor := FromDomain(domain)
-// 	result := rep.Conn.Preload("Patient").Where("schedules_id = ?", visitor.SchedulesId).Find(&visitorData)
-// 	if result.Error != nil {
-// 		return []visitors.Domain{}, result.Error
-// 	}
-// 	return visitorData, nil
-// }
+func (rep *MysqlVisitorRepository) ShowAllPatient(ctx context.Context, domain visitors.Domain) ([]visitors.Domain, error) {
+	visitorData := []Visitors{}
+	visitor := FromDomain(domain)
+	result := rep.Conn.Preload("Patient").Where("schedules_id = ?", visitor.SchedulesId).Order("antrian_id asc").Find(&visitorData)
+	if result.Error != nil {
+		return []visitors.Domain{}, result.Error
+	}
+	data := ToDomainList(visitorData)
+	return data, nil
+}
+
+func (rep *MysqlVisitorRepository) ShowLogOfPatient(ctx context.Context, log visitors.Log) ([]visitors.Log, error) {
+	record := []VisitorsLog{}
+	mail := FromDomainLog(log)
+	result := rep.Conn.Where("patients_id = ?", mail.PatientsId).Find(&record)
+	if result.Error != nil {
+		return []visitors.Log{}, result.Error
+	}
+	data := ToDomainListLog(record)
+	return data, nil
+}
+
+func (rep *MysqlVisitorRepository) GetDetailSchedule(ctx context.Context, domain visitors.Domain) (uint, uint, error) {
+	var lastPatient, totalPatient int64
+	err := rep.Conn.Table("visitors").Count(&totalPatient).Error
+	err1 := rep.Conn.Table("visitors").Select("antrian_id").Order("antrian_id asc").Find(&lastPatient).Error
+	if err != nil {
+		return 0, 0, err
+	}
+	if err1 != nil {
+		return 0, 0, err1
+	}
+	return uint(lastPatient), uint(totalPatient), nil
+}

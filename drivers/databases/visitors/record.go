@@ -14,6 +14,7 @@ type Visitors struct {
 	PatientsId  uint `gorm:"primaryKey"` // patients
 	AntrianId   uint
 	Keluhan     string
+	Patient     patients.Patients `gorm:"foreignKey:PatientsId"`
 	CreateAt    time.Time
 	UpdateAt    time.Time
 }
@@ -31,6 +32,14 @@ type VisitorsLog struct {
 	CreateAt    time.Time
 }
 
+func ToDomainList(record []Visitors) []visitors.Domain {
+	var returnValue []visitors.Domain
+	for _, value := range record {
+		returnValue = append(returnValue, value.ToDomain())
+	}
+	return returnValue
+}
+
 func (visitor *Visitors) ToDomain() visitors.Domain {
 	return visitors.Domain{
 		// ID:         visitor.ID,
@@ -38,9 +47,9 @@ func (visitor *Visitors) ToDomain() visitors.Domain {
 		SchedulesId: visitor.SchedulesId,
 		PatientsId:  visitor.PatientsId,
 		Keluhan:     visitor.Keluhan,
-		// Patient:     visitor.ToDomain().Patient,
-		CreateAt: visitor.CreateAt,
-		UpdateAt: visitor.UpdateAt,
+		Patient:     visitor.Patient.ToDomain(),
+		CreateAt:    visitor.CreateAt,
+		UpdateAt:    visitor.UpdateAt,
 	}
 }
 
@@ -54,6 +63,14 @@ func FromDomain(domain visitors.Domain) Visitors {
 		CreateAt:    domain.CreateAt,
 		UpdateAt:    domain.UpdateAt,
 	}
+}
+
+func ToDomainListLog(record []VisitorsLog) []visitors.Log {
+	var returnValue []visitors.Log
+	for _, value := range record {
+		returnValue = append(returnValue, value.ToDomainLog())
+	}
+	return returnValue
 }
 
 func (visitor *VisitorsLog) ToDomainLog() visitors.Log {

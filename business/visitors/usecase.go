@@ -113,13 +113,36 @@ func (uc *VisitorUsecase) DontCome(ctx context.Context, log Log) (Log, error) {
 	return data, nil
 }
 
-// func (uc *VisitorUsecase) ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error) {
-// 	if domain.SchedulesId <= 0 {
-// 		return []Domain{}, errors.New("schedule id empty")
-// 	}
-// 	visitor, err := uc.Repo.ShowAllPatient(ctx, domain)
-// 	if err != nil {
-// 		return []Domain{}, err
-// 	}
-// 	return visitor, nil
-// }
+func (uc *VisitorUsecase) ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error) {
+	if domain.SchedulesId <= 0 {
+		return []Domain{}, errors.New("schedule id empty")
+	}
+	visitor, err := uc.Repo.ShowAllPatient(ctx, domain)
+	if err != nil {
+		return []Domain{}, err
+	}
+	return visitor, nil
+}
+
+func (uc *VisitorUsecase) ShowLogOfPatient(ctx context.Context, log Log) ([]Log, error) {
+	if log.PatientsId <= 0 {
+		return []Log{}, errors.New("patient Id empty")
+	}
+
+	data, err := uc.Repo.ShowLogOfPatient(ctx, log)
+	if err != nil {
+		return []Log{}, err
+	}
+	return data, nil
+}
+
+func (uc *VisitorUsecase) GetDetailSchedule(ctx context.Context, domain Domain) (uint, uint, error) {
+	if domain.SchedulesId <= 0 {
+		return 0, 0, errors.New("schedule id empty")
+	}
+	last, count, err := uc.Repo.GetDetailSchedule(ctx, domain)
+	if err != nil {
+		return 0, 0, err
+	}
+	return last, count, nil
+}
