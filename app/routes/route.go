@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"backend/app/middlewares"
 	"backend/controllers/doctors"
 	"backend/controllers/patients"
 	"backend/controllers/schedules"
@@ -12,6 +13,7 @@ import (
 )
 
 type ControllerList struct {
+	JWTMiddleware      middleware.JWTConfig
 	DoctorController   doctors.DoctorController
 	PatientController  patients.PatientController
 	ScheduleController schedules.ScheduleController
@@ -41,8 +43,8 @@ func (cl *ControllerList) PatientRouteRegister(e *echo.Echo, ctx time.Duration) 
 func (cl *ControllerList) ScheduleRouteRegister(e *echo.Echo, ctx time.Duration) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	// e.Use(middleware.BodyDump(middlewares.Log))
-	ev1 := e.Group("/api/v1/schedule")
-	ev1.POST("/add", cl.ScheduleController.Add)
+	ev1 := e.Group("/api/v1/schedule", middleware.JWTWithConfig(cl.JWTMiddleware))
+	ev1.POST("/add", cl.ScheduleController.Add, middlewares.RoleValidation("doctor"))
 	ev1.PUT("/update", cl.ScheduleController.Modif)
 	ev1.POST("/show", cl.ScheduleController.Show)
 	ev1.DELETE("/delete", cl.ScheduleController.Remove)

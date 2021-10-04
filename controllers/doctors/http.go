@@ -27,6 +27,11 @@ func (doctorController DoctorController) Login(c echo.Context) error {
 	ctx := c.Request().Context()
 	doctor, err := doctorController.DoctorUseCase.Login(ctx, doctorLogin.ToDomain())
 
+	cookie := new(http.Cookie)
+	cookie.Name = "token"
+	cookie.Value = doctor.Token
+	c.SetCookie(cookie)
+
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

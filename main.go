@@ -1,6 +1,7 @@
 package main
 
 import (
+	_middlewares "backend/app/middlewares"
 	"backend/app/routes"
 
 	_doctorUsecase "backend/business/doctors"
@@ -60,11 +61,16 @@ func main() {
 	// db, err := mongodb.Connect(ctx)
 	DBMigrate(Conn)
 
+	configJWT := _middlewares.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiredDuration: viper.GetInt(`jwt.expired`),
+	}
+
 	e := echo.New()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	doctorRepository := _doctordb.NewMysqlDoctorRepository(Conn)
-	doctorUseCase := _doctorUsecase.NewDoctorUsecase(doctorRepository, timeoutContext)
+	doctorUseCase := _doctorUsecase.NewDoctorUsecase(doctorRepository, &configJWT, timeoutContext)
 	DoctorController := _doctorControllers.NewDoctorController(doctorUseCase)
 
 	patientRepository := _patientdb.NewMysqlPatientRepository(Conn)
@@ -80,6 +86,7 @@ func main() {
 	VisitorController := _visitorControllers.NewVisitorController(visitorUsecase)
 
 	routesInit := routes.ControllerList{
+		JWTMiddleware:      configJWT.Init(),
 		DoctorController:   *DoctorController,
 		PatientController:  *PatientController,
 		ScheduleController: *ScheduleController,
