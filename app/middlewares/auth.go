@@ -31,27 +31,10 @@ func (config *ConfigJWT) Init() middleware.JWTConfig {
 	}
 }
 
-func (config *ConfigJWT) GenerateTokenDoctor(userId uint) string {
+func (config *ConfigJWT) GenerateToken(userId uint, role string) string {
 	claims := JWTCostumClaims{
 		userId,
-		"doctor",
-		jwt.StandardClaims{
-			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(int64(config.ExpiredDuration))).Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, _ := token.SignedString([]byte(config.SecretJWT))
-	// if err != nil {
-	// 	panic(err)
-	// }
-	return t
-}
-
-func (config *ConfigJWT) GenerateTokenPatient(userId uint) string {
-	claims := JWTCostumClaims{
-		userId,
-		"patient",
+		role,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(int64(config.ExpiredDuration))).Unix(),
 		},

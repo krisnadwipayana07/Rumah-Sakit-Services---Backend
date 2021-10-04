@@ -1,6 +1,7 @@
 package patients
 
 import (
+	"backend/app/middlewares"
 	"context"
 	"errors"
 	"time"
@@ -9,12 +10,14 @@ import (
 type PatientsUsecase struct {
 	Repo           Repository
 	contextTimeout time.Duration
+	jwtAuth        *middlewares.ConfigJWT
 }
 
-func NewPatientsUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewPatientsUsecase(repo Repository, jwtAuth *middlewares.ConfigJWT, timeout time.Duration) Usecase {
 	return &PatientsUsecase{
 		Repo:           repo,
 		contextTimeout: timeout,
+		jwtAuth:        jwtAuth,
 	}
 }
 
@@ -91,6 +94,12 @@ func (uc *PatientsUsecase) Login(ctx context.Context, domain Domain) (Domain, er
 	}
 
 	user, err := uc.Repo.Login(ctx, domain)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	user.Token = uc.jwtAuth.GenerateToken(user.ID, "patient")
+	_, err = uc.Repo.Update(ctx, user)
 
 	if err != nil {
 		return Domain{}, err

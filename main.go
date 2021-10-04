@@ -74,7 +74,7 @@ func main() {
 	DoctorController := _doctorControllers.NewDoctorController(doctorUseCase)
 
 	patientRepository := _patientdb.NewMysqlPatientRepository(Conn)
-	patientUsecase := _patientUsecase.NewPatientsUsecase(patientRepository, timeoutContext)
+	patientUsecase := _patientUsecase.NewPatientsUsecase(patientRepository, &configJWT, timeoutContext)
 	PatientController := _patientControllers.NewPatientController(patientUsecase)
 
 	scheduleRepository := _scheduledb.NewMysqlSchedulesRepository(Conn)
