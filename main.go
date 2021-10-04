@@ -58,7 +58,6 @@ func main() {
 	}
 
 	Conn := configDB.InitialDB()
-	// db, err := mongodb.Connect(ctx)
 	DBMigrate(Conn)
 
 	configJWT := _middlewares.ConfigJWT{
@@ -67,6 +66,8 @@ func main() {
 	}
 
 	e := echo.New()
+
+	// db, err := _mongoDB.Connect()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	doctorRepository := _doctordb.NewMysqlDoctorRepository(Conn)
