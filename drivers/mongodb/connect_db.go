@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"context"
+	"log"
 
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -10,18 +11,16 @@ import (
 
 //var global connect db
 
-func Connect(ctx context.Context) (*mongo.Database, error) {
+func Connect(ctx context.Context) *mongo.Database {
 	clientOptions := options.Client()
 	clientOptions.ApplyURI(viper.GetString(`mongodb.uri`))
 	client, err := mongo.NewClient(clientOptions)
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
-
 	err = client.Connect(ctx)
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
-
-	return client.Database(viper.GetString(`mongodb.database`)), nil
+	return client.Database(viper.GetString(`mongodb.database`))
 }

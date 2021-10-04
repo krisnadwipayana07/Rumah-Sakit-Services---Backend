@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"backend/app/middlewares"
 	"backend/controllers/doctors"
 	"backend/controllers/patients"
 	"backend/controllers/schedules"
@@ -12,6 +13,7 @@ import (
 )
 
 type ControllerList struct {
+	JWTMiddleware      middleware.JWTConfig
 	DoctorController   doctors.DoctorController
 	PatientController  patients.PatientController
 	ScheduleController schedules.ScheduleController
@@ -31,7 +33,7 @@ func (cl *ControllerList) DoctorRouteRegister(e *echo.Echo, ctx time.Duration) {
 
 func (cl *ControllerList) PatientRouteRegister(e *echo.Echo, ctx time.Duration) {
 	e.Pre(middleware.RemoveTrailingSlash())
-	// e.Use(middleware.BodyDump(middlewares.Log))
+	e.Use(middleware.BodyDump(middlewares.Log))
 	ev1 := e.Group("/api/v1/patient")
 	ev1.POST("/login", cl.PatientController.Login)
 	ev1.PUT("/update", cl.PatientController.Update)
@@ -41,11 +43,11 @@ func (cl *ControllerList) PatientRouteRegister(e *echo.Echo, ctx time.Duration) 
 func (cl *ControllerList) ScheduleRouteRegister(e *echo.Echo, ctx time.Duration) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	// e.Use(middleware.BodyDump(middlewares.Log))
-	ev1 := e.Group("/api/v1/schedule")
-	ev1.POST("/add", cl.ScheduleController.Add)
-	ev1.PUT("/update", cl.ScheduleController.Modif)
+	ev1 := e.Group("/api/v1/schedule", middleware.JWTWithConfig(cl.JWTMiddleware))
+	ev1.POST("/add", cl.ScheduleController.Add, middlewares.RoleValidation("doctor"))
+	ev1.PUT("/update", cl.ScheduleController.Modif, middlewares.RoleValidation("doctor"))
 	ev1.POST("/show", cl.ScheduleController.Show)
-	ev1.DELETE("/delete", cl.ScheduleController.Remove)
+	ev1.DELETE("/delete", cl.ScheduleController.Remove, middlewares.RoleValidation("doctor"))
 	ev1.GET("/getAll", cl.ScheduleController.GetAll)
 	ev1.GET("/getAllDoctor", cl.ScheduleController.GetAllInOneDoctor)
 	// ev1.POST("/insertDoctor", cl.ScheduleController.InsertDoctor)
@@ -54,15 +56,15 @@ func (cl *ControllerList) ScheduleRouteRegister(e *echo.Echo, ctx time.Duration)
 func (cl *ControllerList) VisitorRoute(e *echo.Echo, ctx time.Duration) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	// e.Use(middleware.BodyDump(middlewares.Log))
-	ev1 := e.Group("/api/v1/visitor")
-	ev1.POST("/add", cl.VisitorController.AddVisitor)
+	ev1 := e.Group("/api/v1/visitor", middleware.JWTWithConfig(cl.JWTMiddleware))
+	ev1.POST("/add", cl.VisitorController.AddVisitor, middlewares.RoleValidation("patient"))
 	ev1.POST("/show", cl.VisitorController.ShowVisitor)
 	ev1.DELETE("/delete", cl.VisitorController.DeleteVisitor)
 	ev1.PUT("/update", cl.VisitorController.UpdateVisitor)
-	ev1.DELETE("/cancel", cl.VisitorController.CancelVisitor)
-	ev1.DELETE("/dontCome", cl.VisitorController.DontCome)
+	ev1.DELETE("/cancel", cl.VisitorController.CancelVisitor, middlewares.RoleValidation("patient"))
+	ev1.DELETE("/dontCome", cl.VisitorController.DontCome, middlewares.RoleValidation("doctor"))
 	ev1.GET("/getAllPatient", cl.VisitorController.FetchAllPatient)
-	ev1.GET("/showAllLog", cl.VisitorController.GetLogPatient)
+	ev1.GET("/showAllLog", cl.VisitorController.GetLogPatient, middlewares.RoleValidation("doctor"))
 	ev1.GET("/ShowDetailSchedule", cl.VisitorController.GetScheduleDetails)
 
 }
