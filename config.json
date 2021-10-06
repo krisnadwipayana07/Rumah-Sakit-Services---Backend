@@ -7,11 +7,11 @@
         "timeout": 2
     },
     "database":{
-        "host": "localhost",
+        "host": "db",
         "port": "3306",
         "user": "root",
-        "pass": "boomskii95",
-        "name": "rumah_sakit"
+        "pass": "root",
+        "name": "rumah-sakit"
     },
     "mongodb":{
         "uri": "mongodb://localhost:27017",
