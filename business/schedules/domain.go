@@ -15,7 +15,7 @@ type Domain struct {
 	TanggalJaga time.Time
 	JamAwal     string
 	JamAkhir    string
-	Patients    []patients.Domain
+	Patients    patients.Domain
 	Doctors     Doctors
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

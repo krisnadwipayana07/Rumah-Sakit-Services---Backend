@@ -99,10 +99,5 @@ func (uc *PatientsUsecase) Login(ctx context.Context, domain Domain) (Domain, er
 	}
 
 	user.Token = uc.jwtAuth.GenerateToken(user.ID, "patient")
-	_, err = uc.Repo.Update(ctx, user)
-
-	if err != nil {
-		return Domain{}, err
-	}
 	return user, nil
 }
