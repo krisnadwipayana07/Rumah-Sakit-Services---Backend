@@ -19,9 +19,6 @@ func NewSquedulesUsecase(repo Repository, timeout time.Duration) Usecase {
 }
 
 func (uc *SquedulesUsecase) Add(ctx context.Context, domain Domain) (Domain, error) {
-	if domain.DoctorId <= 0 {
-		return Domain{}, errors.New("doctorId empty")
-	}
 	if domain.Room == "" {
 		return Domain{}, errors.New("room empty")
 	}

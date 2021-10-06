@@ -35,6 +35,9 @@ func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 	if domain.Address == "" {
 		return Domain{}, errors.New("address empty")
 	}
+	if domain.Nip == "" {
+		return Domain{}, errors.New("nip empty")
+	}
 	if domain.DoctorJob == "" {
 		return Domain{}, errors.New("doctorJob empty")
 	}
@@ -50,6 +53,9 @@ func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 }
 
 func (uc *DoctorUsecase) Update(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.ID <= 0 {
+		return Domain{}, errors.New("id Empty")
+	}
 	if domain.Name == "" {
 		return Domain{}, errors.New("name empty")
 	}
@@ -93,11 +99,7 @@ func (uc *DoctorUsecase) Login(ctx context.Context, domain Domain) (Domain, erro
 	}
 
 	user.Token = uc.jwtAuth.GenerateToken(user.ID, "doctor")
-	_, err = uc.Repo.Update(ctx, user)
 
-	if err != nil {
-		return Domain{}, err
-	}
 	return user, nil
 }
 

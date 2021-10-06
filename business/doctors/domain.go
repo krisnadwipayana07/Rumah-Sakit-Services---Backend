@@ -18,7 +18,7 @@ type Domain struct {
 	DoctorJob     string
 	Token         string
 	ContactPerson string
-	Schedules     []schedules.Domain
+	Schedules     schedules.Domain
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	DeletedAt     sql.NullTime

@@ -45,6 +45,9 @@ func (uc *VisitorUsecase) RemoveVisitorToLog(ctx context.Context, log Log) (Log,
 	if log.PatientsId <= 0 {
 		return Log{}, errors.New("patient id empty")
 	}
+	if log.Solusi == "" && log.Message == "" {
+		return Log{}, errors.New("solusi atau message empty")
+	}
 	visitor, err := uc.Repo.RemoveVisitorToLog(ctx, log)
 	if err != nil {
 		return Log{}, err
