@@ -33,7 +33,7 @@ func (cl *ControllerList) DoctorRouteRegister(e *echo.Echo, ctx time.Duration) {
 
 func (cl *ControllerList) PatientRouteRegister(e *echo.Echo, ctx time.Duration) {
 	e.Pre(middleware.RemoveTrailingSlash())
-	e.Use(middleware.BodyDump(middlewares.Log))
+	// e.Use(middleware.BodyDump(middlewares.Log))
 	ev1 := e.Group("/api/v1/patient")
 	ev1.POST("/login", cl.PatientController.Login)
 	ev1.PUT("/update", cl.PatientController.Update)

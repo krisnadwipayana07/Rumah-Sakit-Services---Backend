@@ -1,22 +1,17 @@
 {
     "debug": true,
     "server": {
-        "address": ":8001"
+        "address": ":8080"
     },
     "context":{
         "timeout": 2
     },
     "database":{
-        "host": "db",
+        "host": "db-rumah-sakit.cwhnid1vyp1m.us-east-2.rds.amazonaws.com",
         "port": "3306",
-        "user": "root",
-        "pass": "root",
-        "name": "rumah-sakit"
-    },
-    "mongodb":{
-        "uri": "mongodb://localhost:27017",
-        "database": "log",
-        "collection": "log data"
+        "user": "admin",
+        "pass": "admin123",
+        "name": "rumah_sakit"
     },
     "jwt":{
         "secret": "kepo",
