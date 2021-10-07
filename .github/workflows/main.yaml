@@ -27,6 +27,8 @@ jobs:
     needs: unit-test
     steps:
     - uses: actions/checkout@v2
+    - name: move dir
+      run: cd backend
     - name: build docker
       run: docker build -t krisnadwipayana/rumah_sakit:1.0.0 .
     - name: login registry docker hub
