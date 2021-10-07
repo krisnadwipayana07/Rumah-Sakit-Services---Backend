@@ -1,0 +1,20 @@
+{
+    "debug": true,
+    "server": {
+        "address": ":8080"
+    },
+    "context":{
+        "timeout": 2
+    },
+    "database":{
+        "host": "db-rumah-sakit.cwhnid1vyp1m.us-east-2.rds.amazonaws.com",
+        "port": "3306",
+        "user": "admin",
+        "pass": "admin123",
+        "name": "rumah_sakit"
+    },
+    "jwt":{
+        "secret": "kepo",
+        "expired": "24"
+    }
+}
