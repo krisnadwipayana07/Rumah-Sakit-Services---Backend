@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>doctors: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">backend/business/doctors/usecase.go (100.0%)</option>
+				
+				<option value="file1">backend/business/patients/usecase.go (93.8%)</option>
+				
+				<option value="file2">backend/business/schedules/usecase.go (96.1%)</option>
+				
+				<option value="file3">backend/business/visitors/usecase.go (98.7%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package doctors
+
+import (
+        "backend/app/middlewares"
+        "context"
+        "errors"
+        "time"
+)
+
+type DoctorUsecase struct {
+        Repo           Repository
+        contextTimeout time.Duration
+        jwtAuth        *middlewares.ConfigJWT
+}
+
+func NewDoctorUsecase(repo Repository, jwtAuth *middlewares.ConfigJWT, timeout time.Duration) Usecase <span class="cov8" title="1">{
+        return &amp;DoctorUsecase{
+                Repo:           repo,
+                contextTimeout: timeout,
+                jwtAuth:        jwtAuth,
+        }
+}</span>
+
+func (uc *DoctorUsecase) Register(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+
+        if domain.Email == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("email empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Password == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("password empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Name == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("name empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Address == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("address empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Nip == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("nip empty")
+        }</span>
+        <span class="cov8" title="1">if domain.DoctorJob == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("doctorJob empty")
+        }</span>
+        <span class="cov8" title="1">if domain.ContactPerson == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("contact person empty")
+        }</span>
+
+        <span class="cov8" title="1">user, err := uc.Repo.Register(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return user, nil</span>
+}
+
+func (uc *DoctorUsecase) Update(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.ID &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("id Empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Name == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("name empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Address == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("address empty")
+        }</span>
+        <span class="cov8" title="1">if domain.DoctorJob == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("doctorJob empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Email == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("email empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Token == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("token empty")
+        }</span>
+        <span class="cov8" title="1">if domain.ContactPerson == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("contact person empty")
+        }</span>
+
+        <span class="cov8" title="1">user, err := uc.Repo.Update(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return user, nil</span>
+}
+
+func (uc *DoctorUsecase) Login(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
+        defer cancel()
+
+        if domain.Email == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("email empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Password == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("password empty")
+        }</span>
+
+        <span class="cov8" title="1">user, err := uc.Repo.Login(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+
+        <span class="cov8" title="1">user.Token = uc.jwtAuth.GenerateToken(user.ID, "doctor")
+
+        return user, nil</span>
+}
+
+func (uc *DoctorUsecase) ShowAll(ctx context.Context) ([]Domain, error) <span class="cov8" title="1">{
+        allData, err := uc.Repo.ShowAll(ctx)
+        if err != nil </span><span class="cov8" title="1">{
+                return []Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return allData, nil</span>
+}
+
+// func (uc *DoctorUsecase) AddSchedule(ctx context.Context, doctorId, scheduleId uint) ([]uint, error) {
+//         if scheduleId &lt;= 0 {
+//                 return []uint{0, 0}, errors.New("schedule id empty")
+//         }
+//         if doctorId &lt;= 0 {
+//                 return []uint{0, 0}, errors.New("doctor id empty")
+//         }
+//         var domain Domain
+
+//         manySchedule, err := uc.Repo.AddSchedule(ctx, domain, doctorId, scheduleId)
+//         if err != nil {
+//                 return []uint{0, 0}, err
+//         }
+//         return manySchedule, nil
+// }
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package patients
+
+import (
+        "backend/app/middlewares"
+        "context"
+        "errors"
+        "time"
+)
+
+type PatientsUsecase struct {
+        Repo           Repository
+        contextTimeout time.Duration
+        jwtAuth        *middlewares.ConfigJWT
+}
+
+func NewPatientsUsecase(repo Repository, jwtAuth *middlewares.ConfigJWT, timeout time.Duration) Usecase <span class="cov8" title="1">{
+        return &amp;PatientsUsecase{
+                Repo:           repo,
+                contextTimeout: timeout,
+                jwtAuth:        jwtAuth,
+        }
+}</span>
+
+func (uc *PatientsUsecase) Register(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+
+        if domain.Email == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("email empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Password == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("password empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Name == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("name empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Address == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("address empty")
+        }</span>
+        <span class="cov8" title="1">if domain.BirthDate.String() == "" </span><span class="cov0" title="0">{
+                return Domain{}, errors.New("birth Date empty")
+        }</span>
+        <span class="cov8" title="1">if domain.BirthPlace == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("birth place empty")
+        }</span>
+        <span class="cov8" title="1">if domain.NoBPJS == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("no BPJS empty")
+        }</span>
+        <span class="cov8" title="1">if domain.ContactPerson == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("contact Person empty")
+        }</span>
+
+        <span class="cov8" title="1">user, err := uc.Repo.Register(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return user, nil</span>
+}
+
+func (uc *PatientsUsecase) Update(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.Email == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("email empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Name == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("name empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Address == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("address empty")
+        }</span>
+        <span class="cov8" title="1">if domain.BirthDate.String() == "" </span><span class="cov0" title="0">{
+                return Domain{}, errors.New("birthDate empty")
+        }</span>
+        <span class="cov8" title="1">if domain.BirthPlace == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("birthplace empty")
+        }</span>
+        <span class="cov8" title="1">if domain.NoBPJS == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("no BPJS empty")
+        }</span>
+        <span class="cov8" title="1">if domain.ContactPerson == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("contact Person empty")
+        }</span>
+
+        <span class="cov8" title="1">user, err := uc.Repo.Update(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return user, nil</span>
+}
+
+func (uc *PatientsUsecase) Login(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.Email == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("email empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Password == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("password empty")
+        }</span>
+
+        <span class="cov8" title="1">user, err := uc.Repo.Login(ctx, domain)
+        if err != nil </span><span class="cov0" title="0">{
+                return Domain{}, err
+        }</span>
+
+        <span class="cov8" title="1">user.Token = uc.jwtAuth.GenerateToken(user.ID, "patient")
+        return user, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package schedules
+
+import (
+        "context"
+        "errors"
+        "time"
+)
+
+type SquedulesUsecase struct {
+        Repo           Repository
+        contextTimeout time.Duration
+}
+
+func NewSquedulesUsecase(repo Repository, timeout time.Duration) Usecase <span class="cov8" title="1">{
+        return &amp;SquedulesUsecase{
+                Repo:           repo,
+                contextTimeout: timeout,
+        }
+}</span>
+
+func (uc *SquedulesUsecase) Add(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.Room == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("room empty")
+        }</span>
+        <span class="cov8" title="1">if domain.TanggalJaga.String() == "" </span><span class="cov0" title="0">{
+                return Domain{}, errors.New("tanggal jaga empty")
+        }</span>
+        <span class="cov8" title="1">if domain.JamAwal == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("jam jaga awal empty")
+        }</span>
+        <span class="cov8" title="1">if domain.JamAkhir == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("jam jaga akhir empty")
+        }</span>
+
+        <span class="cov8" title="1">squedule, err := uc.Repo.Add(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return squedule, nil</span>
+}
+
+func (uc *SquedulesUsecase) Remove(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.ID &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("id empty")
+        }</span>
+
+        <span class="cov8" title="1">squedules, err := uc.Repo.Remove(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return squedules, nil</span>
+}
+
+func (uc *SquedulesUsecase) Modificate(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.ID &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.DoctorId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("doctorId empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Room == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("room empty")
+        }</span>
+        <span class="cov8" title="1">if domain.TanggalJaga.String() == "" </span><span class="cov0" title="0">{
+                return Domain{}, errors.New("tanggal jaga empty")
+        }</span>
+        <span class="cov8" title="1">if domain.JamAwal == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("jam jaga awal empty")
+        }</span>
+        <span class="cov8" title="1">if domain.JamAkhir == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("jam jaga akhir empty")
+        }</span>
+
+        <span class="cov8" title="1">squedule, err := uc.Repo.Modificate(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return squedule, nil</span>
+}
+
+func (uc *SquedulesUsecase) Show(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.ID &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("id empty")
+        }</span>
+
+        <span class="cov8" title="1">squedule, err := uc.Repo.Show(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return squedule, nil</span>
+}
+
+func (uc *SquedulesUsecase) GetAllInOneDoctor(ctx context.Context, domain Domain) ([]Domain, error) <span class="cov8" title="1">{
+        if domain.DoctorId &lt;= 0 </span><span class="cov8" title="1">{
+                return []Domain{}, errors.New("doctorId empty")
+        }</span>
+        <span class="cov8" title="1">allData, err := uc.Repo.GetAllInOneDoctor(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return []Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return allData, nil</span>
+}
+func (uc *SquedulesUsecase) GetAll(ctx context.Context) ([]Domain, error) <span class="cov8" title="1">{
+        allData, err := uc.Repo.GetAll(ctx)
+        if err != nil </span><span class="cov8" title="1">{
+                return []Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return allData, nil</span>
+}
+
+// func (uc *SquedulesUsecase) InsertDoctor(ctx context.Context, domain Domain) (Domain, error) {
+//         if domain.DoctorId &lt;= 0 {
+//                 return Domain{}, errors.New("doctor id empty")
+//         }
+//         if domain.ID &lt;= 0 {
+//                 return Domain{}, errors.New("id empty")
+//         }
+//         schedule, err := uc.Repo.InsertDoctor(ctx, domain)
+//         if err != nil {
+//                 return Domain{}, err
+//         }
+//         return schedule, nil
+// }
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package visitors
+
+import (
+        "context"
+        "errors"
+        "time"
+)
+
+type VisitorUsecase struct {
+        Repo           Repository
+        ContextTimeout time.Duration
+}
+
+func NewVisitorUsecase(repo Repository, timeout time.Duration) Usecase <span class="cov8" title="1">{
+        return &amp;VisitorUsecase{
+                Repo:           repo,
+                ContextTimeout: timeout,
+        }
+}</span>
+
+func (uc *VisitorUsecase) AddVisitor(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        // if domain.AntrianId &lt;= 0 {
+        //         return Domain{}, errors.New("antrean Id empty")
+        // }
+        if domain.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("schedule Id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("patient Id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Keluhan == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("keluhan empty")
+        }</span>
+
+        <span class="cov8" title="1">visitor, err := uc.Repo.AddVisitor(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return visitor, nil</span>
+}
+func (uc *VisitorUsecase) RemoveVisitorToLog(ctx context.Context, log Log) (Log, error) <span class="cov8" title="1">{
+        if log.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return Log{}, errors.New("schedule id empty")
+        }</span>
+        <span class="cov8" title="1">if log.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return Log{}, errors.New("patient id empty")
+        }</span>
+        <span class="cov8" title="1">if log.Solusi == "" &amp;&amp; log.Message == "" </span><span class="cov8" title="1">{
+                return Log{}, errors.New("solusi atau message empty")
+        }</span>
+        <span class="cov8" title="1">visitor, err := uc.Repo.RemoveVisitorToLog(ctx, log)
+        if err != nil </span><span class="cov8" title="1">{
+                return Log{}, err
+        }</span>
+        <span class="cov8" title="1">return visitor, nil</span>
+}
+func (uc *VisitorUsecase) ModificateVisitor(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.AntrianId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("antrean Id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("schedule Id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("patient Id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.Keluhan == "" </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("keluhan empty")
+        }</span>
+
+        <span class="cov8" title="1">visitor, err := uc.Repo.ModificateVisitor(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return visitor, nil</span>
+}
+
+func (uc *VisitorUsecase) ShowVisitor(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("schedule id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("patient id empty")
+        }</span>
+        <span class="cov8" title="1">visitor, err := uc.Repo.ShowVisitor(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return visitor, nil</span>
+}
+
+func (uc *VisitorUsecase) CancelVisitor(ctx context.Context, domain Domain) (Domain, error) <span class="cov8" title="1">{
+        if domain.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("schedule id empty")
+        }</span>
+        <span class="cov8" title="1">if domain.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return Domain{}, errors.New("patient id empty")
+        }</span>
+        <span class="cov8" title="1">data, err := uc.Repo.CancelVisitor(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return data, nil</span>
+}
+func (uc *VisitorUsecase) DontCome(ctx context.Context, log Log) (Log, error) <span class="cov8" title="1">{
+        if log.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return Log{}, errors.New("schedule id empty")
+        }</span>
+        <span class="cov8" title="1">if log.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return Log{}, errors.New("patient id empty")
+        }</span>
+        <span class="cov8" title="1">data, err := uc.Repo.DontCome(ctx, log)
+        if err != nil </span><span class="cov8" title="1">{
+                return Log{}, err
+        }</span>
+        <span class="cov8" title="1">return data, nil</span>
+}
+
+func (uc *VisitorUsecase) ShowAllPatient(ctx context.Context, domain Domain) ([]Domain, error) <span class="cov8" title="1">{
+        if domain.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return []Domain{}, errors.New("schedule id empty")
+        }</span>
+        <span class="cov8" title="1">visitor, err := uc.Repo.ShowAllPatient(ctx, domain)
+        if err != nil </span><span class="cov8" title="1">{
+                return []Domain{}, err
+        }</span>
+        <span class="cov8" title="1">return visitor, nil</span>
+}
+
+func (uc *VisitorUsecase) ShowLogOfPatient(ctx context.Context, log Log) ([]Log, error) <span class="cov8" title="1">{
+        if log.PatientsId &lt;= 0 </span><span class="cov8" title="1">{
+                return []Log{}, errors.New("patient Id empty")
+        }</span>
+
+        <span class="cov8" title="1">data, err := uc.Repo.ShowLogOfPatient(ctx, log)
+        if err != nil </span><span class="cov8" title="1">{
+                return []Log{}, err
+        }</span>
+        <span class="cov8" title="1">return data, nil</span>
+}
+
+func (uc *VisitorUsecase) GetDetailSchedule(ctx context.Context, domain Domain) (uint, uint, error) <span class="cov8" title="1">{
+        if domain.SchedulesId &lt;= 0 </span><span class="cov8" title="1">{
+                return 0, 0, errors.New("schedule id empty")
+        }</span>
+        <span class="cov8" title="1">last, count, err := uc.Repo.GetDetailSchedule(ctx, domain)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, 0, err
+        }</span>
+        <span class="cov8" title="1">return last, count, nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
