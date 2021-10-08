@@ -10,6 +10,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Doctor godoc
+// @Summary doctor documentation
+// @Description documentation of doctor
+// @Tags doctor
+// @Accept json
+// @Produce json
+// @Param todo body types.Todo true "New Todo"
+// @Success 201 {object} responses.DoctorResponse
+// @Failure 400 {object} controllers.NewErrorResponse
+// @Router /todos [post]
+
 type DoctorController struct {
 	DoctorUseCase doctors.Usecase
 }
