@@ -63,6 +63,7 @@ jobs:
       - name: Connect EC2 & Remove All Container & Pull from Registry & Start
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull krisnadwipayana/rumah_sakit:1.0.0 && docker run -d -p 8080:8080 --name rumah_sakit krisnadwipayana/rumah_sakit:1.0.0'
 =======
         run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull krisnadwipayana/rumah_sakit:1.0.0 && docker run -d -p 8080:8080 --name rumah_sakit krisnadwipayana/rumah_sakit:1.0.0'
@@ -70,3 +71,6 @@ jobs:
 =======
         run: ssh development 'docker rm -vf $(docker ps -a -q) && docker pull krisnadwipayana/rumah_sakit:1.0.0 && docker run -d -p 8080:8080 --name rumah_sakit krisnadwipayana/rumah_sakit:1.0.0'
 >>>>>>> parent of 23e409a (Update main.yaml)
+=======
+        run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull krisnadwipayana/rumah_sakit:1.0.0 && docker run -d -p 8080:8080 --name=rumah_sakit krisnadwipayana/rumah_sakit:1.0.0'
+>>>>>>> parent of 68f1f24 (development(ci/cd) : fixing)
