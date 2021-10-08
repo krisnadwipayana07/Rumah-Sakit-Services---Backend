@@ -9,7 +9,6 @@ import (
 type DoctorResponse struct {
 	Id            uint               `json:"id"`
 	Email         string             `json:"email"`
-	Password      string             `json:"password"`
 	Name          string             `json:"name"`
 	Address       string             `json:"address"`
 	Nip           string             `json:"nip"`
@@ -26,7 +25,6 @@ func FromDomain(domain doctors.Domain) DoctorResponse {
 	return DoctorResponse{
 		Id:            domain.ID,
 		Email:         domain.Email,
-		Password:      domain.Password,
 		Name:          domain.Name,
 		Address:       domain.Address,
 		Nip:           domain.Nip,

@@ -2,6 +2,7 @@ package main
 
 import (
 	_middlewares "backend/app/middlewares"
+
 	"backend/app/routes"
 
 	_doctorUsecase "backend/business/doctors"
@@ -26,7 +27,26 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
+	_ "github.com/swaggo/echo-swagger/example/docs"
 )
+
+// @title Echo Swagger Example API
+// @version 1.0
+// @description documentation swagger.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /api/v1
+// @schemes http
 
 func init() {
 	viper.SetConfigFile(`config.json`)
@@ -94,6 +114,7 @@ func main() {
 		VisitorController:  *VisitorController,
 	}
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	routesInit.DoctorRouteRegister(e, timeoutContext)
 	routesInit.PatientRouteRegister(e, timeoutContext)
 	routesInit.ScheduleRouteRegister(e, timeoutContext)
