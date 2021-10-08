@@ -1,0 +1,1186 @@
+openapi: 3.0.3
+info:
+  title: Rumah Sakit
+  description: >-
+    RESTful API to maintain hospitality services
+  version: 1-oas3
+servers:
+  - url: http://localhost:8080/api/v1
+  
+  
+paths:
+  /doctor/login:
+    post:
+      tags:
+        - doctors
+      description: get doctor data
+      summary: to db
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Success login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        email:
+                          type: string
+                        nama:
+                          type: string
+                        address:
+                          type: string
+                        nip:
+                          type: string
+                        description:
+                          type: string
+                        doctorjob:
+                          type: string
+                        contactperson:
+                          type: string
+                          
+  '/doctor/register':
+    post:
+      tags:
+        - doctors
+      description: Create doctor acc
+      summary: create doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                nama:
+                  type: string
+                address:
+                  type: string
+                nip:
+                  type: string
+                description:
+                  type: string
+                doctorjob:
+                  type: string
+                contactperson:
+                  type: string
+      responses:
+        '200':
+          description: Success createing data doctor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      nip:
+                        type: string
+                      description:
+                        type: string
+                      doctorjob:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  '/doctor/update':
+    put:
+      tags:
+        - doctors
+      description: update doctor acc
+      summary: update doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                email:
+                  type: string
+                password:
+                  type: string
+                nama:
+                  type: string
+                address:
+                  type: string
+                nip:
+                  type: string
+                description:
+                  type: string
+                doctorjob:
+                  type: string
+                contactperson:
+                  type: string
+      responses:
+        '200':
+          description: Success updating data doctor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      nip:
+                        type: string
+                      description:
+                        type: string
+                      doctorjob:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  'doctor/getAll':
+    get:
+      tags:
+        - doctors
+      description: get all doctor
+      summary: get all
+      responses:
+        '200':
+          description: get all
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      nip:
+                        type: string
+                      description:
+                        type: string
+                      doctorjob:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  '/patient/login':
+    post:
+      tags:
+        - patients
+      description: get patinet data
+      summary: to db
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Success login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        email:
+                          type: string
+                        nama:
+                          type: string
+                        address:
+                          type: string
+                        nip:
+                          type: string
+                        description:
+                          type: string
+                        doctorjob:
+                          type: string
+                        contactperson:
+                          type: string
+                          
+
+  '/patient/register':
+    post:
+      tags:
+        - patients
+      description: Create patient acc
+      summary: create patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                nama:
+                  type: string
+                address:
+                  type: string
+                birthdate:
+                  type: string
+                birthplace:
+                  type: string
+                noBPJS:
+                  type: string
+                contactperson:
+                  type: string
+      responses:
+        '200':
+          description: Success createing data doctor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  '/patient/update':
+    put:
+      tags:
+        - patients
+      description: update doctor acc
+      summary: update doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                email:
+                  type: string
+                password:
+                  type: string
+                nama:
+                  type: string
+                address:
+                  type: string
+                birthdate:
+                  type: string
+                birthplace:
+                  type: string
+                noBPJS:
+                  type: string
+                contactperson:
+                  type: string
+      responses:
+        '200':
+          description: Success updating data doctor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  'patient/getAll':
+    get:
+      tags:
+        - patients
+      description: get all doctor
+      summary: get all
+      responses:
+        '200':
+          description: get all
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  
+  'schedules/getAll':
+    get:
+      tags:
+        - schedule
+      summary: Show all schedule
+      responses:
+        '200':
+          description: Success get ALl schedule
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    id:
+                      type: number
+                    doctorId:
+                      type: string
+                    room:
+                      type: string
+                    tanggalJaga:
+                      type: string
+                    jamAwal:
+                      type: string
+                    jamAkhir:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  'schedules/getAllDoctor':
+    get:
+      tags:
+        - schedule
+      summary: Show all schedule doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doctorId:
+                  type: number
+      responses:
+        '200':
+          description: Success get ALl schedule
+          
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    id:
+                      type: number
+                    doctorId:
+                      type: string
+                    room:
+                      type: string
+                    tanggalJaga:
+                      type: string
+                    jamAwal:
+                      type: string
+                    jamAkhir:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'schedules/add':
+    post:
+      tags:
+        - schedule
+      summary: Show all schedule doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doctorId:
+                  type: number
+                room:
+                  type: string
+                tanggalJaga:
+                  type: string
+                jamAwal:
+                  type: string
+                jamAkhir:
+                  type: string
+      responses:
+        '200':
+          description: Success get ALl schedule
+          
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    id:
+                      type: number
+                    doctorId:
+                      type: string
+                    room:
+                      type: string
+                    tanggalJaga:
+                      type: string
+                    jamAwal:
+                      type: string
+                    jamAkhir:
+                      type: string
+  'schedules/delete':
+    delete:
+      tags:
+        - schedule
+      summary: Show all schedule doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doctorId:
+                  type: number
+                  
+  'schedules/update':
+    put:
+      tags:
+        - schedule
+      summary: Show all schedule doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                doctorId:
+                  type: number
+                room:
+                  type: string
+                tanggalJaga:
+                  type: string
+                jamAwal:
+                  type: string
+                jamAkhir:
+                  type: string
+      responses:
+        '200':
+          description: Success update schedule
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    id:
+                      type: number
+                    doctorId:
+                      type: string
+                    room:
+                      type: string
+                    tanggalJaga:
+                      type: string
+                    jamAwal:
+                      type: string
+                    jamAkhir:
+                      type: string
+                      
+  'schedules/show':
+    post:
+      tags:
+        - schedule
+      summary: Show all schedule doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+      responses:
+        '200':
+          description: Success get ALl schedule
+          
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    id:
+                      type: number
+                    doctorId:
+                      type: string
+                    room:
+                      type: string
+                    tanggalJaga:
+                      type: string
+                    jamAwal:
+                      type: string
+                    jamAkhir:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/add':
+    post:
+      tags:
+        - visitor
+      summary: add visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schedulesId:
+                  type: number
+                patientsId:
+                  type: number
+                keluhan:
+                  type: string
+                
+      responses:
+        '200':
+          description: Success get ALl schedule
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/show':
+    post:
+      tags:
+        - visitor
+      summary: add visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schedulesId:
+                  type: number
+                patientsId:
+                  type: number
+                
+      responses:
+        '200':
+          description: sucsess show
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/cancel':
+    delete:
+      tags:
+        - visitor
+      summary: delete visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schedulesId:
+                  type: number
+                patientsId:
+                  type: number
+                
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/update':
+    put:
+      tags:
+        - visitor
+      summary: update visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                antreanId:
+                  type: number
+                schedulesId:
+                  type: number
+                patientsId:
+                  type: number
+                keluhan:
+                  type: string
+                
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/delete':
+    delete:
+      tags:
+        - visitor
+      summary: gadateng visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schedulesId:
+                  type: number
+                patientsId:
+                  type: number
+                solusi:
+                  type: string
+                
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/dontCome':
+    delete:
+      tags:
+        - visitor
+      summary: gadateng visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schedulesId:
+                  type: number
+                patientsId:
+                  type: number
+                message:
+                  type: string
+                
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/getAllPatient':
+    get:
+      tags:
+        - visitor
+      summary: gadateng visitor
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+                        
+  'visitor/showAllLog':
+    get:
+      tags:
+        - visitor
+      summary: gadateng visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patientsId:
+                  type: number
+                
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
+  'visitor/ShowDetailSchedule':
+    get:
+      tags:
+        - visitor
+      summary: gadateng visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schedulesId:
+                  type: number
+                
+      responses:
+        '200':
+          description: sucsess cancle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    antreanId:
+                      type: number
+                    schedulesId:
+                      type: string
+                    patientsId:
+                      type: number
+                    keluhan:
+                      type: string
+                    patients:
+                      id:
+                        type: number
+                      email:
+                        type: string
+                      nama:
+                        type: string
+                      address:
+                        type: string
+                      birthdate:
+                        type: string
+                      birthplace:
+                        type: string
+                      noBPJS:
+                        type: string
+                      contactperson:
+                        type: string
