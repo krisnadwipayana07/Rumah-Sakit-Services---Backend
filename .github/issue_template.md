@@ -1,7 +1,7 @@
-# User Story
-**As a** <role model>
-**I want** <purpose>
-**So that** <goal>
+### User Story
+**As a** <role model> 
+**I want** <purpose> 
+**So that** <goal> 
 
-# Acceptance Criteria
+### Acceptance Criteria
 <spesificialy what goal in this issue>
