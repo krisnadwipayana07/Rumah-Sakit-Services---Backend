@@ -1,9 +1,7 @@
----
-name: Tracking issue
-about: Use this template for tracking new features.
-title: "[DATE]: [FEATURE NAME]"
-labels: tracking issue, needs triage
-assignees: octocat
----
+# User Story
+**As a** <role model>
+**I want** <purpose>
+**So that** <goal>
 
-test
+# Acceptance Criteria
+<spesificialy what goal in this issue>
